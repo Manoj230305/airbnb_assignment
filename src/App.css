@@ -1,0 +1,41 @@
+.listing-main-content {
+  display: flex;
+  gap: 80px;
+  position: relative;
+  align-items: flex-start;
+  margin-top: 8px;
+}
+
+.listing-left-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.listing-right-col {
+  width: 370px;
+  flex-shrink: 0;
+}
+
+.full-width-section-container {
+  padding-top: 16px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 1080px) {
+  .listing-main-content {
+    gap: 40px;
+  }
+  .listing-right-col {
+    width: 320px;
+  }
+}
+
+@media (max-width: 900px) {
+  .listing-main-content {
+    flex-direction: column-reverse;
+  }
+  .listing-right-col {
+    width: 100%;
+    margin-bottom: 32px;
+  }
+}

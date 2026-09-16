@@ -1,0 +1,39 @@
+.highlights-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 12px 0 24px 0;
+}
+
+.highlight-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.highlight-icon-wrap {
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.highlight-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.highlight-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  line-height: 20px;
+}
+
+.highlight-desc {
+  font-size: 14px;
+  color: var(--color-text-light);
+  line-height: 20px;
+  margin-top: 2px;
+}

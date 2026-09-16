@@ -1,0 +1,46 @@
+.amenities-section {
+  padding-bottom: 24px;
+}
+
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 16px;
+  column-gap: 24px;
+  margin-bottom: 24px;
+}
+
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.amenity-icon {
+  color: var(--color-text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.amenity-name {
+  font-size: 16px;
+  color: var(--color-text-main);
+}
+
+.amenity-name.crossed {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+.show-all-amenities-btn {
+  font-size: 16px !important;
+  padding: 13px 23px !important;
+  border-radius: 8px !important;
+}
+
+@media (max-width: 600px) {
+  .amenities-grid {
+    grid-template-columns: 1fr;
+  }
+}

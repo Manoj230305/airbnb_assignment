@@ -1,0 +1,68 @@
+.things-to-know-section {
+  padding: 32px 0;
+}
+
+.things-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.things-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.things-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: var(--color-text-main);
+}
+
+.things-col-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.things-text {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-text-main);
+  margin-bottom: 12px;
+}
+
+.things-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.things-list li {
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-text-main);
+}
+
+.things-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: underline;
+  color: var(--color-text-main);
+  margin-top: auto;
+  cursor: pointer;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .things-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
