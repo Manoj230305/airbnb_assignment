@@ -9,7 +9,7 @@ export default function PhotoGallery({ images, onOpenAllPhotos }) {
         {/* Main large photo (Left 50%) */}
         <div
           className="gallery-item main-item"
-          onClick={() => onOpenAllPhotos(0)}
+          onClick={() => onOpenAllPhotos('living2')}
           role="button"
           tabIndex={0}
         >
@@ -26,7 +26,7 @@ export default function PhotoGallery({ images, onOpenAllPhotos }) {
         <div className="gallery-col mid-col">
           <div
             className="gallery-item mid-top"
-            onClick={() => onOpenAllPhotos(1)}
+            onClick={() => onOpenAllPhotos('living2')}
             role="button"
             tabIndex={0}
           >
@@ -40,7 +40,7 @@ export default function PhotoGallery({ images, onOpenAllPhotos }) {
 
           <div
             className="gallery-item mid-bottom"
-            onClick={() => onOpenAllPhotos(2)}
+            onClick={() => onOpenAllPhotos('bedroom')}
             role="button"
             tabIndex={0}
           >
@@ -57,7 +57,7 @@ export default function PhotoGallery({ images, onOpenAllPhotos }) {
         <div className="gallery-col right-col">
           <div
             className="gallery-item right-top"
-            onClick={() => onOpenAllPhotos(3)}
+            onClick={() => onOpenAllPhotos('living2')}
             role="button"
             tabIndex={0}
           >
@@ -71,7 +71,7 @@ export default function PhotoGallery({ images, onOpenAllPhotos }) {
 
           <div
             className="gallery-item right-bottom"
-            onClick={() => onOpenAllPhotos(4)}
+            onClick={() => onOpenAllPhotos('exterior')}
             role="button"
             tabIndex={0}
           >
@@ -86,7 +86,7 @@ export default function PhotoGallery({ images, onOpenAllPhotos }) {
               className="show-all-photos-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                onOpenAllPhotos(0);
+                onOpenAllPhotos('living1');
               }}
             >
               <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">

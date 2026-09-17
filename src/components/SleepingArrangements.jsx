@@ -26,7 +26,7 @@ export default function SleepingArrangements({ sleepingArrangements, onOpenPhoto
           <div
             key={index}
             className="sleeping-card"
-            onClick={() => onOpenPhotos && onOpenPhotos(index === 0 ? 3 : 5)}
+            onClick={() => onOpenPhotos && onOpenPhotos(index === 0 ? 'bedroom' : 'living1')}
             role="button"
             tabIndex={0}
           >

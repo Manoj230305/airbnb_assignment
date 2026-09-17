@@ -19,7 +19,7 @@ import ThingsToKnow from './components/ThingsToKnow';
 import MoreStays from './components/MoreStays';
 
 // Modals
-import AllPhotosModal from './components/Modals/AllPhotosModal';
+import PhotoTourModal from './components/Modals/PhotoTourModal';
 import AmenitiesModal from './components/Modals/AmenitiesModal';
 import ReviewsModal from './components/Modals/ReviewsModal';
 import ShareModal from './components/Modals/ShareModal';
@@ -33,7 +33,7 @@ export default function App() {
 
   // Modals state
   const [allPhotosOpen, setAllPhotosOpen] = useState(false);
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
+  const [selectedPhotoSection, setSelectedPhotoSection] = useState('living1');
   const [amenitiesOpen, setAmenitiesOpen] = useState(false);
   const [reviewsOpen, setReviewsOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
@@ -49,6 +49,12 @@ export default function App() {
       setShowSubNav(window.scrollY > 480);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Check if URL opens with photo tour modal
+    if (window.location.search.includes('modal=PHOTO_TOUR_SCROLLABLE')) {
+      setAllPhotosOpen(true);
+    }
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -68,8 +74,16 @@ export default function App() {
     scrollToSection('host-section');
   };
 
-  const handleOpenAllPhotos = (index = 0) => {
-    setSelectedPhotoIndex(index);
+  const handleOpenAllPhotos = (section = 'living1') => {
+    let sectionId = section;
+    if (typeof section === 'number') {
+      if (section === 0) sectionId = 'living1';
+      else if (section === 1 || section === 3) sectionId = 'living2';
+      else if (section === 2) sectionId = 'bedroom';
+      else if (section === 4) sectionId = 'exterior';
+      else sectionId = 'living1';
+    }
+    setSelectedPhotoSection(sectionId);
     setAllPhotosOpen(true);
   };
 
@@ -214,9 +228,8 @@ export default function App() {
 
       {/* --- Modals --- */}
       {allPhotosOpen && (
-        <AllPhotosModal
-          photos={listingData.images.all}
-          initialIndex={selectedPhotoIndex}
+        <PhotoTourModal
+          initialSectionId={selectedPhotoSection}
           onClose={() => setAllPhotosOpen(false)}
           onShare={() => setShareOpen(true)}
         />
