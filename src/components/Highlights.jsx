@@ -1,17 +1,17 @@
 import React from 'react';
-import { Waves, DoorClosed, MapPin } from 'lucide-react';
+import { FlameKindling, Fan, DoorClosed } from 'lucide-react';
 import './Highlights.css';
 
 export default function Highlights({ highlights }) {
   const getIcon = (type) => {
     switch (type) {
-      case 'pool':
-        return <Waves size={24} strokeWidth={1.8} color="#222222" />;
+      case 'outdoor':
+        return <FlameKindling size={24} strokeWidth={1.6} color="#222222" />;
+      case 'cooling':
+        return <Fan size={24} strokeWidth={1.6} color="#222222" />;
       case 'door':
-        return <DoorClosed size={24} strokeWidth={1.8} color="#222222" />;
-      case 'pin':
       default:
-        return <MapPin size={24} strokeWidth={1.8} color="#222222" />;
+        return <DoorClosed size={24} strokeWidth={1.6} color="#222222" />;
     }
   };
 

@@ -2,7 +2,7 @@
   display: flex;
   gap: 80px;
   position: relative;
-  align-items: flex-start;
+  align-items: stretch;
   margin-top: 8px;
 }
 
@@ -14,6 +14,8 @@
 .listing-right-col {
   width: 370px;
   flex-shrink: 0;
+  align-self: stretch;
+  position: relative;
 }
 
 .full-width-section-container {
@@ -33,9 +35,11 @@
 @media (max-width: 900px) {
   .listing-main-content {
     flex-direction: column-reverse;
+    align-items: flex-start;
   }
   .listing-right-col {
     width: 100%;
     margin-bottom: 32px;
+    align-self: auto;
   }
 }

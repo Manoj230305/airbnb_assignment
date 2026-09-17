@@ -1,20 +1,41 @@
 import React, { useState } from 'react';
 import {
   Star,
-  Sparkles,
-  CheckCircle,
+  CheckCircle2,
   Key,
   MessageSquare,
-  MapPin,
+  Map,
   Tag,
-  ChevronRight,
-  ChevronLeft
+  ChevronRight
 } from 'lucide-react';
+import side1 from '../assets/side1.png';
+import side2 from '../assets/side2.png';
 import './ReviewsSection.css';
 
+function SprayBottleIcon({ size = 26, color = '#222222' }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M10 2h4M12 2v4M9 6h6l1 4v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V10l3-4z" />
+      <path d="M5.5 10.5 4 11.5" />
+      <circle cx="18" cy="5" r="0.75" fill={color} />
+      <circle cx="21" cy="7" r="0.75" fill={color} />
+      <circle cx="19" cy="9.5" r="0.75" fill={color} />
+    </svg>
+  );
+}
+
 export default function ReviewsSection({
-  rating,
-  reviewsCount,
+  rating = 4.95,
+  reviewsCount = 19,
   ratingCategories,
   reviewsMentions,
   reviews,
@@ -29,16 +50,12 @@ export default function ReviewsSection({
 
   return (
     <section id="reviews" className="reviews-section">
-      {/* Big Hero Rating Badge */}
+      {/* Big Hero Rating Badge with side1 and side2 decorative laurels */}
       <div className="reviews-hero-badge">
         <div className="laurel-big-wrapper">
-          <svg viewBox="0 0 48 48" className="laurel-big" width="56" height="56" fill="currentColor">
-            <path d="M18.94 3.08a1.5 1.5 0 0 1 1.07 1.4v.12a25.2 25.2 0 0 1-4.35 13.42 27.42 27.42 0 0 1-11.55 9.2 1.5 1.5 0 0 1-1.95-.8 1.5 1.5 0 0 1 .8-1.95A24.44 24.44 0 0 0 13.2 16.5 22.2 22.2 0 0 0 17 4.53a1.5 1.5 0 0 1 1.5-1.5h.44zm10.12 0a1.5 1.5 0 0 1 1.92 1.45 22.2 22.2 0 0 0 3.81 11.97 24.44 24.44 0 0 0 10.37 7.97 1.5 1.5 0 0 1 .8 1.95 1.5 1.5 0 0 1-1.96.8 27.42 27.42 0 0 1-11.55-9.2 25.2 25.2 0 0 1-4.35-13.42v-.12a1.5 1.5 0 0 1 1.06-1.3zM10.35 25.05a1.5 1.5 0 0 1 .42 2.08A23.55 23.55 0 0 0 7.5 36.24a1.5 1.5 0 0 1-2.1.22 1.5 1.5 0 0 1-.24-2.1 26.48 26.48 0 0 1 3.66-10.25 1.5 1.5 0 0 1 1.53-.57zm27.3 0a1.5 1.5 0 0 1 1.53.57 26.48 26.48 0 0 1 3.66 10.25 1.5 1.5 0 0 1-.24 2.1 1.5 1.5 0 0 1-2.1-.22 23.55 23.55 0 0 0-3.27-9.11 1.5 1.5 0 0 1 .42-2.09zm-20.7 12.9a1.5 1.5 0 0 1 .63 2.03 23.85 23.85 0 0 0 4.92 6.3 1.5 1.5 0 0 1-2.1 2.14 26.85 26.85 0 0 1-5.49-7.05 1.5 1.5 0 0 1 .65-2.03 1.4 1.4 0 0 1 1.39.11zm14.1 0a1.5 1.5 0 0 1 1.4-.11 1.5 1.5 0 0 1 .64 2.03 26.85 26.85 0 0 1-5.49 7.05 1.5 1.5 0 0 1-2.1-2.14 23.85 23.85 0 0 0 4.92-6.3 1.5 1.5 0 0 1 .63-.53z" />
-          </svg>
+          <img src={side1} alt="" className="laurel-branch-img left-branch" />
           <span className="big-rating-number">{rating}</span>
-          <svg viewBox="0 0 48 48" className="laurel-big flip" width="56" height="56" fill="currentColor">
-            <path d="M18.94 3.08a1.5 1.5 0 0 1 1.07 1.4v.12a25.2 25.2 0 0 1-4.35 13.42 27.42 27.42 0 0 1-11.55 9.2 1.5 1.5 0 0 1-1.95-.8 1.5 1.5 0 0 1 .8-1.95A24.44 24.44 0 0 0 13.2 16.5 22.2 22.2 0 0 0 17 4.53a1.5 1.5 0 0 1 1.5-1.5h.44zm10.12 0a1.5 1.5 0 0 1 1.92 1.45 22.2 22.2 0 0 0 3.81 11.97 24.44 24.44 0 0 0 10.37 7.97 1.5 1.5 0 0 1 .8 1.95 1.5 1.5 0 0 1-1.96.8 27.42 27.42 0 0 1-11.55-9.2 25.2 25.2 0 0 1-4.35-13.42v-.12a1.5 1.5 0 0 1 1.06-1.3zM10.35 25.05a1.5 1.5 0 0 1 .42 2.08A23.55 23.55 0 0 0 7.5 36.24a1.5 1.5 0 0 1-2.1.22 1.5 1.5 0 0 1-.24-2.1 26.48 26.48 0 0 1 3.66-10.25 1.5 1.5 0 0 1 1.53-.57zm27.3 0a1.5 1.5 0 0 1 1.53.57 26.48 26.48 0 0 1 3.66 10.25 1.5 1.5 0 0 1-.24 2.1 1.5 1.5 0 0 1-2.1-.22 23.55 23.55 0 0 0-3.27-9.11 1.5 1.5 0 0 1 .42-2.09zm-20.7 12.9a1.5 1.5 0 0 1 .63 2.03 23.85 23.85 0 0 0 4.92 6.3 1.5 1.5 0 0 1-2.1 2.14 26.85 26.85 0 0 1-5.49-7.05 1.5 1.5 0 0 1 .65-2.03 1.4 1.4 0 0 1 1.39.11zm14.1 0a1.5 1.5 0 0 1 1.4-.11 1.5 1.5 0 0 1 .64 2.03 26.85 26.85 0 0 1-5.49 7.05 1.5 1.5 0 0 1-2.1-2.14 23.85 23.85 0 0 0 4.92-6.3 1.5 1.5 0 0 1 .63-.53z" />
-          </svg>
+          <img src={side2} alt="" className="laurel-branch-img right-branch" />
         </div>
 
         <h3 className="gf-heading">Guest favourite</h3>
@@ -50,7 +67,7 @@ export default function ReviewsSection({
         </button>
       </div>
 
-      {/* Category Ratings Row */}
+      {/* Category Ratings Row - No scroll bar, clean 7 columns */}
       <div className="category-ratings-row">
         {/* Overall rating bar chart */}
         <div className="category-col overall-col">
@@ -63,7 +80,7 @@ export default function ReviewsSection({
                   <div
                     className="bar-fill"
                     style={{
-                      width: stars === 5 ? '94%' : stars === 4 ? '6%' : '0%'
+                      width: stars === 5 ? '92%' : stars === 4 ? '8%' : '0%'
                     }}
                   />
                 </div>
@@ -79,7 +96,7 @@ export default function ReviewsSection({
           <span className="cat-title">Cleanliness</span>
           <span className="cat-score">{ratingCategories.cleanliness}</span>
           <div className="cat-icon-wrap">
-            <Sparkles size={24} strokeWidth={1.7} />
+            <SprayBottleIcon size={26} />
           </div>
         </div>
 
@@ -90,7 +107,7 @@ export default function ReviewsSection({
           <span className="cat-title">Accuracy</span>
           <span className="cat-score">{ratingCategories.accuracy}</span>
           <div className="cat-icon-wrap">
-            <CheckCircle size={24} strokeWidth={1.7} />
+            <CheckCircle2 size={26} strokeWidth={1.6} />
           </div>
         </div>
 
@@ -101,7 +118,7 @@ export default function ReviewsSection({
           <span className="cat-title">Check-in</span>
           <span className="cat-score">{ratingCategories.checkIn}</span>
           <div className="cat-icon-wrap">
-            <Key size={24} strokeWidth={1.7} />
+            <Key size={26} strokeWidth={1.6} />
           </div>
         </div>
 
@@ -112,7 +129,7 @@ export default function ReviewsSection({
           <span className="cat-title">Communication</span>
           <span className="cat-score">{ratingCategories.communication}</span>
           <div className="cat-icon-wrap">
-            <MessageSquare size={24} strokeWidth={1.7} />
+            <MessageSquare size={26} strokeWidth={1.6} />
           </div>
         </div>
 
@@ -123,7 +140,7 @@ export default function ReviewsSection({
           <span className="cat-title">Location</span>
           <span className="cat-score">{ratingCategories.location}</span>
           <div className="cat-icon-wrap">
-            <MapPin size={24} strokeWidth={1.7} />
+            <Map size={26} strokeWidth={1.6} />
           </div>
         </div>
 
@@ -134,14 +151,13 @@ export default function ReviewsSection({
           <span className="cat-title">Value</span>
           <span className="cat-score">{ratingCategories.value}</span>
           <div className="cat-icon-wrap">
-            <Tag size={24} strokeWidth={1.7} />
+            <Tag size={26} strokeWidth={1.6} />
           </div>
         </div>
       </div>
 
-      {/* Guest reviews mention */}
+      {/* Guest reviews mention chips - No scroll bar */}
       <div className="reviews-mentions-block">
-        <h4 className="mentions-heading">Guest reviews mention</h4>
         <div className="mentions-carousel">
           {reviewsMentions.map((tag, idx) => (
             <button

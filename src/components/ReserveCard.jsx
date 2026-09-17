@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { Tag, ChevronDown, ChevronUp, Flag, Star, Minus, Plus } from 'lucide-react';
+import { ChevronDown, ChevronUp, Flag, Minus, Plus } from 'lucide-react';
 import './ReserveCard.css';
 
 export default function ReserveCard({
-  nightlyPrice,
-  currency,
-  rating,
-  reviewsCount,
-  checkInDate,
-  checkOutDate,
+  nightlyPrice = 5699,
+  currency = '₹',
+  rating = 4.95,
+  reviewsCount = 19,
+  checkInDate = '10/18/2026',
+  checkOutDate = '10/23/2026',
   onOpenCalendar,
   onOpenReport
 }) {
-  const [guests, setGuests] = useState({ adults: 1, children: 0, infants: 0, pets: 0 });
+  const [guests, setGuests] = useState({ adults: 2, children: 0, infants: 0, pets: 0 });
   const [guestDropdownOpen, setGuestDropdownOpen] = useState(false);
   const [claimed, setClaimed] = useState(false);
   const [reservationMade, setReservationMade] = useState(false);
@@ -22,20 +22,13 @@ export default function ReserveCard({
     guests.infants > 0 ? `, ${guests.infants} infant${guests.infants > 1 ? 's' : ''}` : ''
   }${guests.pets > 0 ? `, ${guests.pets} pet${guests.pets > 1 ? 's' : ''}` : ''}`;
 
-  const hasDates = checkInDate && checkOutDate;
-  const nights = hasDates ? 3 : 0; // Default estimate 3 nights
-  const discountMultiplier = claimed ? 0.9 : 1.0;
-  const effectiveNightlyPrice = Math.round(nightlyPrice * discountMultiplier);
-  const basePrice = effectiveNightlyPrice * (nights || 1);
-  const cleaningFee = 850;
-  const serviceFee = Math.round(basePrice * 0.12);
-  const totalPrice = basePrice + cleaningFee + serviceFee;
+  const currentCheckIn = checkInDate || '10/18/2026';
+  const currentCheckOut = checkOutDate || '10/23/2026';
 
   const updateGuestCount = (type, delta) => {
     setGuests(prev => {
       const current = prev[type];
       const updated = Math.max(type === 'adults' ? 1 : 0, current + delta);
-      // max 3 guests total for adults+children
       if (type === 'adults' || type === 'children') {
         const other = type === 'adults' ? prev.children : prev.adults;
         if (updated + other > 3) return prev;
@@ -45,11 +38,7 @@ export default function ReserveCard({
   };
 
   const handleAction = () => {
-    if (!hasDates) {
-      onOpenCalendar();
-    } else {
-      setReservationMade(true);
-    }
+    setReservationMade(true);
   };
 
   return (
@@ -58,10 +47,12 @@ export default function ReserveCard({
       <div className="promo-tag-card">
         <div className="promo-left">
           <div className="tag-icon-circle">
-            <Tag size={18} fill="#2E7D32" color="#2E7D32" />
+            <svg viewBox="0 0 32 32" width="22" height="22" fill="#43A047">
+              <path d="M12.4 2.6a4 4 0 0 1 2.8 1.2l14.2 14.2a4 4 0 0 1 0 5.6l-8.4 8.4a4 4 0 0 1-5.6 0L1.2 17.8A4 4 0 0 1 0 15V6a4 4 0 0 1 4-4h8.4zm-4.4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+            </svg>
           </div>
           <div className="promo-text-wrap">
-            <span className="promo-main-text">Take 10% off your next stay.</span>
+            <span className="promo-main-text">Get 10% off your next stay.</span>
             <span className="promo-terms-link">Terms apply</span>
           </div>
         </div>
@@ -69,22 +60,17 @@ export default function ReserveCard({
           className={`claim-promo-btn ${claimed ? 'claimed' : ''}`}
           onClick={() => setClaimed(!claimed)}
         >
-          {claimed ? 'Applied' : 'Claim'}
+          {claimed ? 'Claimed' : 'Claim'}
         </button>
       </div>
 
       {/* Main Reservation Card */}
       <div className="reserve-card">
         <div className="reserve-card-header">
-          {hasDates ? (
-            <div className="price-title-row">
-              <span className="price-amount">{currency}{effectiveNightlyPrice.toLocaleString('en-IN')}</span>
-              <span className="price-period"> night</span>
-              {claimed && <span className="discount-badge">10% OFF</span>}
-            </div>
-          ) : (
-            <h3 className="add-dates-title">Add dates for prices</h3>
-          )}
+          <div className="price-title-row">
+            <span className="price-amount">{currency}28,499</span>
+            <span className="price-period">for 5 nights</span>
+          </div>
         </div>
 
         {/* Inputs Border Box */}
@@ -92,15 +78,11 @@ export default function ReserveCard({
           <div className="dates-row" onClick={onOpenCalendar} role="button" tabIndex={0}>
             <div className="date-cell check-in-cell">
               <span className="cell-label">CHECK-IN</span>
-              <span className={`cell-value ${!checkInDate ? 'placeholder' : ''}`}>
-                {checkInDate || 'Add date'}
-              </span>
+              <span className="cell-value">{currentCheckIn}</span>
             </div>
             <div className="date-cell check-out-cell">
               <span className="cell-label">CHECKOUT</span>
-              <span className={`cell-value ${!checkOutDate ? 'placeholder' : ''}`}>
-                {checkOutDate || 'Add date'}
-              </span>
+              <span className="cell-value">{currentCheckOut}</span>
             </div>
           </div>
 
@@ -230,9 +212,14 @@ export default function ReserveCard({
           </div>
         )}
 
+        {/* Free cancellation banner */}
+        <div className="cancellation-promo-badge">
+          Free cancellation before <strong>17 October</strong>
+        </div>
+
         {/* CTA Button */}
-        <button className="btn-primary reserve-cta-btn" onClick={handleAction}>
-          {hasDates ? 'Reserve' : 'Check availability'}
+        <button className="reserve-cta-btn" onClick={handleAction}>
+          Reserve
         </button>
 
         {reservationMade && (
@@ -241,36 +228,13 @@ export default function ReserveCard({
           </div>
         )}
 
-        {hasDates && (
-          <div className="price-calculation-breakdown">
-            <p className="wont-be-charged-note">You won't be charged yet</p>
-            <div className="calc-row">
-              <span className="calc-label underline-link">
-                {currency}{effectiveNightlyPrice.toLocaleString('en-IN')} x {nights} nights
-              </span>
-              <span className="calc-val">{currency}{basePrice.toLocaleString('en-IN')}</span>
-            </div>
-            <div className="calc-row">
-              <span className="calc-label underline-link">Cleaning fee</span>
-              <span className="calc-val">{currency}{cleaningFee.toLocaleString('en-IN')}</span>
-            </div>
-            <div className="calc-row">
-              <span className="calc-label underline-link">Airbnb service fee</span>
-              <span className="calc-val">{currency}{serviceFee.toLocaleString('en-IN')}</span>
-            </div>
-            <div className="calc-divider" />
-            <div className="calc-row total-row">
-              <span className="total-label">Total before taxes</span>
-              <span className="total-val">{currency}{totalPrice.toLocaleString('en-IN')}</span>
-            </div>
-          </div>
-        )}
+        <p className="wont-be-charged-note">You won't be charged yet</p>
       </div>
 
       {/* Report listing */}
       <div className="report-listing-wrap">
         <button className="report-listing-btn" onClick={onOpenReport}>
-          <Flag size={14} />
+          <Flag size={14} fill="#717171" stroke="none" />
           <span>Report this listing</span>
         </button>
       </div>

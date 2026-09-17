@@ -12,7 +12,21 @@ export default function TitleSection({ title, onShare }) {
 
         <div className="title-actions">
           <button className="action-btn" onClick={onShare} aria-label="Share listing">
-            <Share size={16} strokeWidth={2} />
+            <svg
+              viewBox="0 0 32 32"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M26 19v7a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-7" />
+              <path d="M16 4v16" />
+              <path d="m9 11 7-7 7 7" />
+            </svg>
             <span className="action-text">Share</span>
           </button>
 

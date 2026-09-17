@@ -21,37 +21,23 @@ export default function Description({ description }) {
         </p>
       </div>
 
-      {/* Main Intro */}
+      {/* Main Intro only - extra 'The space' and 'Guest access' removed as requested */}
       <div className="description-content">
-        <p className="description-intro-p">
+        <p className={`description-intro-p ${!isExpanded ? 'clamped' : ''}`}>
           {description.intro}
         </p>
 
-        <div className="description-space-block">
-          <h3 className="space-heading">The space</h3>
-          <p className="space-summary">
-            {isExpanded
-              ? description.space
-              : `${description.space.slice(0, 80)}...`}
-          </p>
-
-          {isExpanded && (
-            <div className="expanded-details">
-              <h4 className="space-subheading">Guest access</h4>
-              <p>{description.guestAccess}</p>
-              <h4 className="space-subheading">Other things to note</h4>
-              <p style={{ whiteSpace: 'pre-line' }}>{description.otherDetails}</p>
-            </div>
-          )}
-
-          <button
-            className="show-more-desc-btn"
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            <span>{isExpanded ? 'Show less' : 'Show more'}</span>
-            <ChevronRight size={16} strokeWidth={2.4} style={{ transform: isExpanded ? 'rotate(-90deg)' : 'none' }} />
-          </button>
-        </div>
+        <button
+          className="show-more-desc-btn"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <span>{isExpanded ? 'Show less' : 'Show more'}</span>
+          <ChevronRight
+            size={16}
+            strokeWidth={2.4}
+            style={{ transform: isExpanded ? 'rotate(-90deg)' : 'none' }}
+          />
+        </button>
       </div>
     </div>
   );

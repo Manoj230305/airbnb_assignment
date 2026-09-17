@@ -7,30 +7,30 @@ export const listingData = {
   bedroomCount: 1,
   bedCount: 1,
   bathroomCount: 1,
-  rating: 4.97,
-  reviewsCount: 33,
+  rating: 4.95,
+  reviewsCount: 19,
   isGuestFavorite: true,
-  nightlyPrice: 4899,
+  nightlyPrice: 5699,
   currency: "₹",
   discountPercent: 10,
   
   images: {
-    heroMain: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/090d8b0b-b539-42c0-84f8-e1fb0cdf9a93.jpeg",
-    hero2: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/9be71047-fc52-438a-9270-75cb470f6752.jpeg",
+    heroMain: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/2367476f-11c4-4a14-a7c6-267be62c1d59.jpeg",
+    hero2: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/090d8b0b-b539-42c0-84f8-e1fb0cdf9a93.jpeg",
     hero3: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/67c61c6f-6260-4809-9510-0360e58a345d.jpeg",
-    hero4: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/c904e1ab-a39d-4ef0-bdea-8c0bd16b9e3d.jpeg",
-    hero5: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/f6de1663-4e9c-4414-b63b-29a154a92ee1.jpeg",
+    hero4: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/9be71047-fc52-438a-9270-75cb470f6752.jpeg",
+    hero5: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/c904e1ab-a39d-4ef0-bdea-8c0bd16b9e3d.jpeg",
     livingRoom: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/fc02f48f-a937-42c5-895d-f9cc3113d6ca.jpeg",
     all: [
-      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/090d8b0b-b539-42c0-84f8-e1fb0cdf9a93.jpeg", title: "Private outdoor jacuzzi deck with lounge seating" },
+      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/2367476f-11c4-4a14-a7c6-267be62c1d59.jpeg", title: "Private outdoor jacuzzi deck with palm and lounge seating" },
+      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/090d8b0b-b539-42c0-84f8-e1fb0cdf9a93.jpeg", title: "Outdoor lounge seating with wall sconces" },
+      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/67c61c6f-6260-4809-9510-0360e58a345d.jpeg", title: "Master bedroom with plush king-sized bed" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/9be71047-fc52-438a-9270-75cb470f6752.jpeg", title: "Wooden deck heated jacuzzi with jets" },
-      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/67c61c6f-6260-4809-9510-0360e58a345d.jpeg", title: "Amor de Goa building exterior in Candolim" },
-      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/c904e1ab-a39d-4ef0-bdea-8c0bd16b9e3d.jpeg", title: "Master bedroom with plush king-sized bed" },
+      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/c904e1ab-a39d-4ef0-bdea-8c0bd16b9e3d.jpeg", title: "Amor de Goa building exterior in Candolim" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/f6de1663-4e9c-4414-b63b-29a154a92ee1.jpeg", title: "Double-height verandah ceiling with fans" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/fc02f48f-a937-42c5-895d-f9cc3113d6ca.jpeg", title: "Spacious living room with sofa and dining space" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/70325367-cbae-4993-b560-18cd3f6edd53.jpeg", title: "Modern kitchenette with induction & microwave" },
-      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/2367476f-11c4-4a14-a7c6-267be62c1d59.jpeg", title: "Clean modern bathroom with shower" },
-      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/a9831aeb-f441-44f5-a38f-4cf54e3f0fcf.jpeg", title: "Evening mood lighting at jacuzzi verandah" },
+      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/a9831aeb-f441-44f5-a38f-4cf54e3f0fcf.jpeg", title: "Warm living room and dining area view" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/a45feaa2-b607-4092-83ac-5fd4b2894959.jpeg", title: "Balcony opening into lush green view" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/f1da1c3d-0d10-481e-9b63-c71f9073f30b.jpeg", title: "Shared swimming pool at Amor de Goa" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1599895892448055764/original/34529829-a971-44d3-ac2f-90ea3678a34d.jpeg", title: "Living room Smart TV entertainment unit" },
@@ -44,8 +44,8 @@ export const listingData = {
     name: "Mirashya Homes",
     avatar: "https://a0.muscache.com/im/pictures/user/User/original/6b72f8b5-0e66-4bf1-8ba3-ff0f87ff3687.jpeg",
     yearsHosting: 2,
-    rating: 4.68,
-    reviewsCount: 1553,
+    rating: "4.68",
+    reviewsCount: "1,463",
     isSuperhost: false,
     isVerified: true,
     school: "NICMAR GOA",
@@ -57,28 +57,28 @@ export const listingData = {
       { name: "Aman Dev Pahwa", avatar: "https://a0.muscache.com/im/pictures/user/3e1481b6-60a2-4734-aa8a-3281f42c74a8.jpg" },
       { name: "Maria Karen Priyanka", avatar: "https://a0.muscache.com/im/pictures/user/User/original/ce5e32ac-a948-4906-a1ce-09dd6692210e.jpeg" },
       { name: "Simran", avatar: "https://a0.muscache.com/im/pictures/user/User/original/96348aed-8c72-4eff-8452-93967f9c4252.jpeg" },
-      { name: "Mirashya Homes", avatar: "https://a0.muscache.com/im/pictures/user/User/original/799b3a89-e6b7-49e0-8264-d2c030f066a7.jpeg" },
+      { name: "Pallavi", avatar: "https://a0.muscache.com/im/pictures/user/User/original/799b3a89-e6b7-49e0-8264-d2c030f066a7.jpeg" },
       { name: "Sanyukta", avatar: "https://a0.muscache.com/im/pictures/user/User/original/62280d0a-ec2a-465a-a16a-17f011d0e813.jpeg" },
-      { name: "Shruti", initial: "S", bgColor: "#E00B41" },
-      { name: "Amisha", initial: "A", bgColor: "#1D4ED8" }
+      { name: "Shruti", initial: "S", textColor: "#E00B41", bgColor: "#FDF2F4" },
+      { name: "Amisha", initial: "A", textColor: "#2563EB", bgColor: "#EFF6FF" }
     ]
   },
 
   highlights: [
     {
-      icon: "pool",
-      title: "Dive right in",
-      description: "This is one of the few places in the area with a pool."
+      icon: "outdoor",
+      title: "Outdoor entertainment",
+      description: "The pool and alfresco dining are great for summer trips."
+    },
+    {
+      icon: "cooling",
+      title: "Designed for staying cool",
+      description: "Beat the heat with the A/C and ceiling fan."
     },
     {
       icon: "door",
       title: "Self check-in",
       description: "You can check in with the building staff."
-    },
-    {
-      icon: "pin",
-      title: "Peace and quiet",
-      description: "Guests say this home is in a quiet area."
     }
   ],
 
@@ -155,23 +155,23 @@ export const listingData = {
   ],
 
   ratingCategories: {
-    overall: 4.97,
-    cleanliness: 5.0,
-    accuracy: 4.9,
-    checkIn: 5.0,
-    communication: 4.9,
-    location: 4.9,
-    value: 4.9
+    overall: 4.95,
+    cleanliness: "5.0",
+    accuracy: "5.0",
+    checkIn: "5.0",
+    communication: "5.0",
+    location: "4.8",
+    value: "4.8"
   },
 
   reviewsMentions: [
-    { label: "Hot tub", count: 10, emoji: "🪵" },
-    { label: "Accuracy", count: 10, emoji: "✅" },
-    { label: "Condition", count: 8, emoji: "🎁" },
-    { label: "Hospitality", count: 14, emoji: "🎁" },
-    { label: "Comfort", count: 9, emoji: "🛋️" },
-    { label: "Cleanliness", count: 8, emoji: "🧼" },
-    { label: "Amenities", count: 4, emoji: "🍰" }
+    { label: "Comfort", count: 6, emoji: "🛋️" },
+    { label: "Accuracy", count: 5, emoji: "✅" },
+    { label: "Hot tub", count: 5, emoji: "🪵" },
+    { label: "Condition", count: 4, emoji: "💌" },
+    { label: "Hospitality", count: 8, emoji: "🎁" },
+    { label: "Cleanliness", count: 4, emoji: "🧼" },
+    { label: "Amenities", count: 2, emoji: "🍰" }
   ],
 
   reviews: [
@@ -261,9 +261,10 @@ export const listingData = {
       title: "Cancellation policy",
       icon: "Calendar",
       lines: [
-        "Add your trip dates to get the cancellation details for this stay."
+        "Free cancellation before 17 October. Cancel before check-in on 18 October for a partial refund.",
+        "Review this host's full policy for details."
       ],
-      linkText: "Add dates"
+      linkText: "Learn more"
     },
     houseRules: {
       title: "House rules",
@@ -273,7 +274,7 @@ export const listingData = {
         "Checkout before 11:00 am",
         "3 guests maximum"
       ],
-      linkText: "Show more"
+      linkText: "Learn more"
     },
     safety: {
       title: "Safety & property",
@@ -283,7 +284,7 @@ export const listingData = {
         "Smoke alarm not reported",
         "Exterior security cameras on property"
       ],
-      linkText: "Show more"
+      linkText: "Learn more"
     }
   }
 };

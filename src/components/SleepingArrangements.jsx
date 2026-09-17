@@ -1,17 +1,32 @@
 import React from 'react';
+import bedroomImg from '../assets/bedroom.jpeg';
+import livingImg from '../assets/livingroom.jpeg';
 import './SleepingArrangements.css';
 
 export default function SleepingArrangements({ sleepingArrangements, onOpenPhotos }) {
+  const items = [
+    {
+      room: "Bedroom",
+      beds: "1 double bed",
+      image: bedroomImg
+    },
+    {
+      room: "Living room",
+      beds: "1 sofa",
+      image: livingImg
+    }
+  ];
+
   return (
     <div className="sleeping-arrangements-section">
-      <h2 className="section-title">Where you'll sleep</h2>
+      <h2 className="sleeping-section-title">Where you'll sleep</h2>
 
       <div className="sleeping-cards-grid">
-        {sleepingArrangements.map((item, index) => (
+        {items.map((item, index) => (
           <div
             key={index}
             className="sleeping-card"
-            onClick={() => onOpenPhotos(index === 0 ? 3 : 5)}
+            onClick={() => onOpenPhotos && onOpenPhotos(index === 0 ? 3 : 5)}
             role="button"
             tabIndex={0}
           >

@@ -6,6 +6,7 @@
   height: 80px;
   display: flex;
   align-items: center;
+  padding: 0 44px;
 }
 
 .header-inner {
@@ -18,15 +19,13 @@
 .header-logo .logo-link {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
-.logo-text {
-  color: var(--color-primary);
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.5px;
-  font-family: 'Plus Jakarta Sans', var(--font-primary);
+.header-logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
 /* Center Search Pill */
@@ -52,7 +51,16 @@
 }
 
 .search-pill-left-icon {
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-home-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
 }
 
 .search-pill-item {
@@ -90,7 +98,7 @@
 .header-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .host-cta-btn {
@@ -106,54 +114,30 @@
   background: var(--color-bg-light);
 }
 
-.globe-btn {
-  width: 40px;
-  height: 40px;
+.header-circle-btn {
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
+  background: #F2F2F2;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-text-main);
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.1s;
+  border: none;
+  cursor: pointer;
 }
 
-.globe-btn:hover {
-  background: var(--color-bg-light);
+.header-circle-btn:hover {
+  background: #E8E8E8;
+}
+
+.header-circle-btn:active {
+  transform: scale(0.96);
 }
 
 .user-menu-container {
   position: relative;
-}
-
-.user-menu-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  padding: 5px 6px 5px 12px;
-  background: #FFFFFF;
-  transition: box-shadow 0.2s;
-  color: var(--color-text-main);
-}
-
-.user-menu-btn:hover {
-  box-shadow: 0 2px 4px rgba(0,0,0,0.18);
-}
-
-.user-avatar-circle {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #717171;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.user-avatar-circle svg {
-  color: #FFFFFF !important;
 }
 
 .user-dropdown-menu {
@@ -196,13 +180,16 @@
   .logo-text {
     display: none;
   }
+
   .host-cta-btn {
     display: none;
   }
+
   .search-pill-btn {
     padding: 6px 6px 6px 12px;
     gap: 8px;
   }
+
   .search-pill-item {
     font-size: 12px;
   }

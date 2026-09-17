@@ -1,28 +1,41 @@
 .meet-your-host-section {
-  padding: 32px 0;
+  padding: 32px 0 20px;
+}
+
+.meet-your-host-section .section-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #222222;
+  margin-bottom: 24px;
 }
 
 .host-layout-grid {
   display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 80px;
+  grid-template-columns: 330px 1fr;
+  gap: 72px;
   align-items: flex-start;
+}
+
+/* Left Column */
+.host-left-column {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Passport Card */
 .host-passport-card {
   background: #FFFFFF;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  padding: 24px;
-  border: 1px solid var(--color-border-light);
+  border-radius: 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  padding: 24px 22px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .passport-inner-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
 }
 
 .passport-left-col {
@@ -30,14 +43,15 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  flex: 1;
 }
 
 .passport-avatar-box {
-  width: 90px;
-  height: 90px;
+  width: 86px;
+  height: 86px;
   border-radius: 50%;
   position: relative;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .passport-avatar-img {
@@ -45,16 +59,17 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  display: block;
 }
 
 .verified-badge-icon {
   position: absolute;
   bottom: 0;
-  right: 2px;
-  background: #FF385C;
+  right: 0;
+  background: #E00B41;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,21 +77,28 @@
 }
 
 .passport-host-name {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
-  color: var(--color-text-main);
-  line-height: 28px;
+  color: #222222;
+  line-height: 1.18;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
 }
 
 .passport-host-label {
-  font-size: 14px;
-  color: var(--color-text-light);
+  font-size: 13px;
+  color: #717171;
+  margin-top: 4px;
+  font-weight: 400;
 }
 
 .passport-right-col {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
+  min-width: 90px;
 }
 
 .stat-group {
@@ -85,137 +107,178 @@
 }
 
 .stat-num {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #222222;
   line-height: 1.1;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.passport-star-icon {
+  margin-top: -1px;
 }
 
 .stat-lbl {
   font-size: 10px;
-  color: var(--color-text-light);
-  font-weight: 500;
+  color: #717171;
+  font-weight: 400;
   margin-top: 2px;
 }
 
 .passport-stat-divider {
   height: 1px;
-  background: var(--color-border-light);
+  background: #EBEBEB;
+  width: 100%;
 }
 
-.passport-bottom-details {
+/* Details below passport card */
+.host-bio-details {
   margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--color-border-light);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
-.passport-meta-row {
+.bio-item-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   font-size: 15px;
-  color: var(--color-text-main);
+  color: #222222;
 }
 
-/* Right Details Column */
-.host-details-column {
+.bio-icon {
+  color: #222222;
+  flex-shrink: 0;
+}
+
+/* Right Column */
+.host-right-column {
   display: flex;
   flex-direction: column;
-  gap: 28px;
 }
 
 .co-hosts-heading {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
-  margin-bottom: 16px;
+  color: #222222;
+  margin-bottom: 18px;
 }
 
 .co-hosts-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 16px;
+  column-gap: 20px;
 }
 
-.co-host-pill {
+.co-host-item {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
 .co-host-avatar-img {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .co-host-initial-avatar {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
-  font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
 .co-host-name {
   font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-main);
+  font-weight: 400;
+  color: #222222;
+  line-height: 1.3;
+}
+
+.host-details-block {
+  margin-top: 36px;
 }
 
 .host-details-heading {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
-  margin-bottom: 8px;
+  color: #222222;
+  margin-bottom: 12px;
 }
 
-.response-rate-line {
+.response-stat-line {
   font-size: 15px;
-  color: var(--color-text-main);
+  color: #222222;
+  margin-bottom: 4px;
 }
 
 .response-time-line {
-  font-size: 15px;
-  color: var(--color-text-light);
-  margin-top: 2px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .message-host-btn {
-  font-size: 15px !important;
-  padding: 12px 24px !important;
-  border-radius: 8px !important;
+  background: #F2F2F2;
+  color: #222222;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: inline-block;
+  width: fit-content;
+}
+
+.message-host-btn:hover {
+  background: #E8E8E8;
 }
 
 .payment-protection-notice {
+  margin-top: 36px;
   display: flex;
   align-items: flex-start;
-  gap: 16px;
-  padding-top: 20px;
-  border-top: 1px solid var(--color-border-light);
+  gap: 12px;
 }
 
-.shield-icon-wrap {
+.protection-shield-icon {
+  color: #717171;
   flex-shrink: 0;
   margin-top: 2px;
 }
 
 .protection-text {
   font-size: 12px;
-  color: var(--color-text-light);
+  color: #717171;
   line-height: 18px;
+  margin: 0;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .host-layout-grid {
     grid-template-columns: 1fr;
     gap: 40px;
+  }
+  
+  .host-passport-card {
+    max-width: 360px;
+  }
+}
+
+@media (max-width: 640px) {
+  .co-hosts-grid {
+    grid-template-columns: 1fr;
   }
 }

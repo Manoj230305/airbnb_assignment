@@ -16,7 +16,7 @@ import ReviewsSection from './components/ReviewsSection';
 import LocationMap from './components/LocationMap';
 import MeetYourHost from './components/MeetYourHost';
 import ThingsToKnow from './components/ThingsToKnow';
-import Footer from './components/Footer';
+import MoreStays from './components/MoreStays';
 
 // Modals
 import AllPhotosModal from './components/Modals/AllPhotosModal';
@@ -28,8 +28,8 @@ import './App.css';
 
 export default function App() {
   const [showSubNav, setShowSubNav] = useState(false);
-  const [checkInDate, setCheckInDate] = useState(null);
-  const [checkOutDate, setCheckOutDate] = useState(null);
+  const [checkInDate, setCheckInDate] = useState('10/18/2026');
+  const [checkOutDate, setCheckOutDate] = useState('10/23/2026');
 
   // Modals state
   const [allPhotosOpen, setAllPhotosOpen] = useState(false);
@@ -110,8 +110,6 @@ export default function App() {
             reviewsCount={listingData.reviewsCount}
             onScrollToReviews={() => scrollToSection('reviews')}
           />
-
-          <hr className="divider" />
 
           <HostPreview
             host={listingData.host}
@@ -210,8 +208,9 @@ export default function App() {
         />
       </div>
 
-      {/* Global Footer */}
-      <Footer onOpenLangModal={() => {}} />
+      {/* More stays nearby section replacing previous footer */}
+      <hr className="divider page-container" />
+      <MoreStays />
 
       {/* --- Modals --- */}
       {allPhotosOpen && (
