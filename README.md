@@ -47,16 +47,24 @@ As you scroll past the hero photos, a secondary sticky navigation bar slides int
 
 ---
 
+## System Architecture Diagram
+
+![Airbnb Clone Architecture Diagram](./Architecture_Diagram.png)
+
+---
+
 ## Architecture & Project Structure
 
 ```text
 airbnb_assignment/
+├── api/                            # Vercel serverless functions
+│   └── index.js                    # Serverless bridge exporting Express app
 ├── server/                         # Node.js + Express 5 backend
 │   ├── data/
 │   │   ├── initialData.js          # Seed listing data, reviews & blocked dates
 │   │   ├── store.js                # Atomic JSON file persistence & collision engine
 │   │   └── db.json                 # Auto-generated local JSON database
-│   └── index.js                    # Express REST routes, CORS & API explorer dashboard
+│   └── index.js                    # Express REST routes, static dist serving & API explorer
 ├── src/                            # React 19 Frontend
 │   ├── assets/                     # High-res CDN media, logos & SVG icons
 │   ├── components/
@@ -90,9 +98,11 @@ airbnb_assignment/
 │   ├── App.css                     # Main layout grid, mobile bar & responsive rules
 │   ├── index.css                   # Custom design system tokens, typography & reset
 │   └── main.jsx                    # React DOM root entry point
-├── package.json                    # Concurrently script ("dev") & dependencies
+├── package.json                    # Scripts ("dev", "build", "start", "lint") & dependencies
+├── vercel.json                     # Vercel zero-config rewrites (/api/* -> serverless function)
 ├── vite.config.js                  # Vite dev server with reverse proxy (/api -> :5000)
-└── PROMPTS.txt                     # Prompt engineering log & developer specifications
+├── Architecture_Diagram.png        # High-res architecture visual
+└── Prompt_Logs.txt                 # Prompt engineering log & developer specifications
 ```
 
 ---
@@ -152,11 +162,33 @@ Once running:
 
 ### Individual Scripts
 If you want to run or debug services independently:
+- `npm run dev` — Launches both the Vite frontend and Express API concurrently.
 - `npm run dev:client` — Runs only the Vite frontend on port 5173.
 - `npm run server` — Runs only the Express backend on port 5000.
 - `npm run build` — Compiles the React frontend for production into `dist/`.
-- `npm run preview` — Locally previews the production build.
+- `npm start` — Boots the production Express server, serving the static `dist/` bundle and the `/api/*` endpoints simultaneously on `PORT` (default 5000).
+- `npm run preview` — Locally previews the Vite production build.
 - `npm run lint` — Runs `oxlint` for lightning-fast JavaScript and React linting.
+
+---
+
+## Deployment Guide
+
+This project is configured for seamless deployment on both **container/PaaS platforms** (Render, Railway, Heroku) and **serverless platforms** (Vercel):
+
+### Option A: Render / Railway / Heroku (Recommended for Persistent Full-Stack)
+1. Link your GitHub repository.
+2. Configure build & start commands:
+   - **Build Command:** `npm run build`
+   - **Start Command:** `npm start`
+3. The Express server automatically detects the `dist/` directory, serves your compiled React application on the root URL, and handles all `/api/*` requests natively without CORS or separate backend services.
+
+### Option B: Vercel (Serverless)
+1. Import your repository on [Vercel](https://vercel.com).
+2. The project includes root `vercel.json` rewrites and `api/index.js`.
+3. Vercel automatically:
+   - Deploys the static React build to its global Edge CDN.
+   - Routes `/api/*` requests to the Express serverless function in `api/index.js`.
 
 ---
 

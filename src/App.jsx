@@ -36,7 +36,9 @@ export default function App() {
   const [checkOutDate, setCheckOutDate] = useState('10/23/2026');
 
   // Modals state
-  const [allPhotosOpen, setAllPhotosOpen] = useState(false);
+  const [allPhotosOpen, setAllPhotosOpen] = useState(() => (
+    typeof window !== 'undefined' && window.location.search.includes('modal=PHOTO_TOUR_SCROLLABLE')
+  ));
   const [selectedPhotoSection, setSelectedPhotoSection] = useState('living1');
   const [amenitiesOpen, setAmenitiesOpen] = useState(false);
   const [reviewsOpen, setReviewsOpen] = useState(false);
@@ -75,12 +77,6 @@ export default function App() {
       setShowSubNav(window.scrollY > 480);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Check if URL opens with photo tour modal
-    if (window.location.search.includes('modal=PHOTO_TOUR_SCROLLABLE')) {
-      setAllPhotosOpen(true);
-    }
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

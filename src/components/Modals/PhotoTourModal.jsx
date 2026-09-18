@@ -17,7 +17,7 @@ export default function PhotoTourModal({ initialSectionId = 'living1', onClose, 
       if (lightboxIndex !== null) {
         setLightboxIndex(null);
       } else {
-        onClose && onClose();
+        if (onClose) onClose();
       }
     };
 
@@ -52,7 +52,7 @@ export default function PhotoTourModal({ initialSectionId = 'living1', onClose, 
           setLightboxIndex(null);
         }
       } else if (e.key === 'Escape') {
-        onClose && onClose();
+        if (onClose) onClose();
       }
     };
 

@@ -1,9 +1,16 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import { store } from './data/store.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distPath = path.resolve(__dirname, '../dist');
 
 // Middleware
 app.use(cors());
@@ -15,9 +22,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// Root welcome & API explorer
-app.get('/', (req, res) => {
-  res.send(`
+// Serve static frontend assets from dist if built
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+} else {
+  // Root welcome & API explorer (when dist is not yet built)
+  app.get('/', (req, res) => {
+    res.send(`
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -86,7 +97,8 @@ app.get('/', (req, res) => {
     </body>
     </html>
   `);
-});
+  });
+}
 
 // 1. Health check
 app.get('/api/health', (req, res) => {
@@ -200,24 +212,36 @@ app.post('/api/inquiries', (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: `Thanks ${guestName || 'Traveler'}! Host Mirashya Homes has received your message and usually responds within an hour.`
+      message: `Thanks ${guestName || 'Traveler'}! Host Mirashya Homes has received your message${dates ? ` for ${dates}` : ''} and usually responds within an hour.`
     });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
 });
 
-// Start listening
-app.listen(PORT, () => {
-  console.log(`========================================`);
-  console.log(`🚀 Airbnb Express API listening on http://localhost:${PORT}`);
-  console.log(`📡 Endpoints available:`);
-  console.log(`   - GET  /api/health`);
-  console.log(`   - GET  /api/listing`);
-  console.log(`   - GET  /api/availability`);
-  console.log(`   - POST /api/reserve`);
-  console.log(`   - GET  /api/reviews`);
-  console.log(`   - POST /api/reviews`);
-  console.log(`   - POST /api/inquiries`);
-  console.log(`========================================`);
-});
+// SPA client fallback (for production serving of React router / frontend)
+if (fs.existsSync(distPath)) {
+  app.use((req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
+
+// Start listening (in standalone / persistent server mode)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`========================================`);
+    console.log(`🚀 Airbnb Full-Stack Server listening on http://localhost:${PORT}`);
+    console.log(`📁 Client Bundle: ${fs.existsSync(distPath) ? 'Serving production /dist' : 'Dev mode (dist not built)'}`);
+    console.log(`📡 Endpoints available:`);
+    console.log(`   - GET  /api/health`);
+    console.log(`   - GET  /api/listing`);
+    console.log(`   - GET  /api/availability`);
+    console.log(`   - POST /api/reserve`);
+    console.log(`   - GET  /api/reviews`);
+    console.log(`   - POST /api/reviews`);
+    console.log(`   - POST /api/inquiries`);
+    console.log(`========================================`);
+  });
+}
+
+export default app;

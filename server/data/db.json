@@ -576,6 +576,32 @@
       },
       "status": "confirmed",
       "createdAt": "2026-09-18T03:52:26.249Z"
+    },
+    {
+      "id": "BK-MU6J6TAJ",
+      "start": "10/09/2026",
+      "end": "10/10/2026",
+      "nights": 1,
+      "guests": {
+        "adults": 2,
+        "children": 0,
+        "infants": 0,
+        "pets": 0
+      },
+      "guestName": "Guest Traveler",
+      "pricing": {
+        "nightlyRate": 5699,
+        "nights": 1,
+        "baseSubtotal": 5699,
+        "discount": 0,
+        "cleaningFee": 1200,
+        "serviceFee": 456,
+        "taxes": 883,
+        "totalAmount": 8238,
+        "currency": "₹"
+      },
+      "status": "confirmed",
+      "createdAt": "2026-09-18T05:41:47.851Z"
     }
   ],
   "reviews": [

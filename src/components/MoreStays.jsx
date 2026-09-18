@@ -9,7 +9,7 @@ import s4 from '../assets/footer/s4.jpeg';
 import s5 from '../assets/footer/s5.jpeg';
 import s6 from '../assets/footer/s6.jpeg';
 
-export const moreStaysList = [
+const moreStaysList = [
   {
     id: 1,
     title: "Beautiful Studio with a view to die for",
