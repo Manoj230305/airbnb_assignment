@@ -22,13 +22,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static frontend assets from dist if built
-if (fs.existsSync(distPath)) {
-  app.use(express.static(distPath));
-} else {
-  // Root welcome & API explorer (when dist is not yet built)
-  app.get('/', (req, res) => {
-    res.send(`
+// Serve static frontend assets unconditionally from dist
+app.use(express.static(distPath));
+
+// API Explorer Dashboard (available at /api)
+app.get('/api', (req, res) => {
+  res.send(`
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -97,8 +96,7 @@ if (fs.existsSync(distPath)) {
     </body>
     </html>
   `);
-  });
-}
+});
 
 // 1. Health check
 app.get('/api/health', (req, res) => {
@@ -219,12 +217,15 @@ app.post('/api/inquiries', (req, res) => {
   }
 });
 
-// SPA client fallback (for production serving of React router / frontend)
-if (fs.existsSync(distPath)) {
-  app.use((req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
-  });
-}
+// SPA client fallback (compatible with Express 5 wildcard routing)
+app.get('{*splat}', (req, res) => {
+  const indexHtml = path.join(distPath, 'index.html');
+  if (fs.existsSync(indexHtml)) {
+    res.sendFile(indexHtml);
+  } else {
+    res.redirect('/api');
+  }
+});
 
 // Start listening (in standalone / persistent server mode)
 if (!process.env.VERCEL) {
