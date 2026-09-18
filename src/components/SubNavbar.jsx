@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './SubNavbar.css';
 
-export default function SubNavbar({ visible, rating, reviewsCount, onScrollToSection, onCheckAvailability }) {
+export default function SubNavbar({
+  visible,
+  rating,
+  reviewsCount,
+  onScrollToSection,
+  onCheckAvailability,
+  price,
+  nights = 0,
+  currency = '₹'
+}) {
   const [activeTab, setActiveTab] = useState('photos');
 
   useEffect(() => {
@@ -56,7 +65,11 @@ export default function SubNavbar({ visible, rating, reviewsCount, onScrollToSec
 
         <div className="sub-navbar-cta">
           <div className="sub-navbar-price-info">
-            <span className="sub-price-title">Add dates for prices</span>
+            <span className="sub-price-title">
+              {nights > 0 && price
+                ? `${currency}${price.toLocaleString('en-IN')} for ${nights} nights`
+                : `${currency}${(price || 5699).toLocaleString('en-IN')} night`}
+            </span>
             <div className="sub-price-rating">
               <span className="sub-star">★</span>
               <span className="sub-rating-num">{rating}</span>
@@ -65,7 +78,7 @@ export default function SubNavbar({ visible, rating, reviewsCount, onScrollToSec
             </div>
           </div>
           <button className="btn-primary sub-reserve-btn" onClick={onCheckAvailability}>
-            Check availability
+            {nights > 0 ? 'Reserve' : 'Check availability'}
           </button>
         </div>
       </div>

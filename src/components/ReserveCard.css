@@ -206,12 +206,52 @@
 
 .reservation-success-msg {
   background: #E8F5E9;
-  color: #2E7D32;
-  padding: 10px;
+  color: #1B5E20;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-top: 14px;
+  border: 1px solid #C8E6C9;
+}
+
+.reservation-error-msg {
+  background: #FFEBEE;
+  color: #C62828;
+  padding: 10px 12px;
   border-radius: 6px;
   font-size: 13px;
-  text-align: center;
   margin-top: 12px;
+  border: 1px solid #FFCDD2;
+}
+
+.booking-confirmation-details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #A5D6A7;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.booking-code-tag {
+  font-weight: 700;
+  color: #1B5E20;
+  background: #C8E6C9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.booking-price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  color: #2E7D32;
+}
+
+.reserve-cta-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Guest Selector Dropdown */

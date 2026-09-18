@@ -333,11 +333,42 @@
 }
 
 @media (max-width: 900px) {
-  .category-ratings-row {
-    flex-wrap: nowrap;
-  }
   .review-cards-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .big-rating-number {
+    font-size: 60px;
+    letter-spacing: -1.5px;
+  }
+
+  .laurel-branch-img {
+    height: 68px;
+  }
+
+  .gf-heading {
+    font-size: 18px;
+  }
+
+  .gf-sub-text {
+    font-size: 14px;
+  }
+
+  .category-ratings-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  .category-col {
+    padding: 0;
+  }
+
+  .cat-divider {
+    display: none;
   }
 }

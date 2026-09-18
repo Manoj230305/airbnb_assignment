@@ -1,0 +1,388 @@
+================================================================================
+AIRBNB LISTING CLONE - FULL-STACK DEVELOPER PROMPTS SPECIFICATION
+Project: Airbnb Listing Detail Page Clone (React 19 + Node.js Express 5)
+Target Property: Romantic Jacuzzi 1BHK Candolim | Mirashya UG10 (Goa, India)
+Role: Senior Full-Stack Software Engineer
+================================================================================
+
+PROMPTING METHODOLOGY & CONVENTIONS:
+This file documents the exact sequence of engineering prompts used to design, 
+scaffold, build, integrate, and verify this full-stack application.
+Each prompt follows industry-standard prompting patterns:
+- Persona & Engineering Role
+- Objective & High-level Context
+- Hard Technical Constraints (versions, zero external UI libraries, no Tailwind)
+- Explicit Schema & Signature Specifications
+- Edge Cases, Error Handling & Non-Functional Requirements
+- Acceptance Criteria for Verification
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+Prompt 01: Project Architecture, Scaffolding & Dual-Process Workflow
+Prompt 02: Real-World Data Modeling & High-Fidelity CDN Assets
+Prompt 03: Node.js Express REST API & Atomic JSON Persistence Store
+Prompt 04: Shell Layout, Main Navbar & Sticky Scroll-Spy SubNavbar
+Prompt 05: 5-Photo Mosaic Hero Gallery & Full-Screen Photo Tour Modal
+Prompt 06: Property Overview, Host Highlights & Collapsible Description
+Prompt 07: Featured Amenities & Categorized Slide-Over Modal
+Prompt 08: Interactive Reserve Card Widget & Backend Booking Engine
+Prompt 09: Dual-Month Calendar & Bi-Directional Availability Sync
+Prompt 10: Reviews Scorecard, Search Query Filter & Reviews Modal
+Prompt 11: Host Messaging Modal, Location Map & Things to Know
+Prompt 12: Pure Vanilla CSS Design System, Responsive Breakpoints & Linting
+
+================================================================================
+PROMPT 01: PROJECT ARCHITECTURE, SCAFFOLDING & DUAL-PROCESS WORKFLOW
+================================================================================
+"You are a Senior Full-Stack Engineer scaffolding a pixel-perfect Airbnb listing detail page clone for a technical evaluation.
+
+Objective:
+Set up a clean, zero-configuration full-stack repository combining a modern React frontend with a lightweight Node.js Express backend.
+
+Technical Stack & Constraints:
+1. Frontend: React 19 + Vite.
+2. Icons: lucide-react (pure SVG icons).
+3. Backend: Express 5 + cors (ES Module format, `"type": "module"` in package.json).
+4. No external CSS frameworks (no Tailwind, Bootstrap, or component UI libraries). All styling must use modular Vanilla CSS.
+5. Dev Orchestration: Use `concurrently` so that running `npm run dev` starts both the Express server (port 5000) and the Vite development server (port 5173).
+6. Reverse Proxy: Configure `vite.config.js` to proxy all `/api` requests to `http://localhost:5000` with `changeOrigin: true` to prevent CORS issues in development.
+
+File Requirements:
+- `package.json`: Include scripts for `dev` (concurrently), `dev:client`, `server`, `build`, and `lint`.
+- `vite.config.js`: Include React plugin and `/api` proxy target.
+- `.gitignore`: Standard Node/Vite ignore rules (node_modules, dist, .env, *.log).
+
+Acceptance Criteria:
+- Running `npm run dev` boots both servers simultaneously without terminal collisions.
+- Frontend fetches to `/api/...` resolve cleanly to the Express instance."
+
+================================================================================
+PROMPT 02: REAL-WORLD DATA MODELING & HIGH-FIDELITY CDN ASSETS
+================================================================================
+"You are a Frontend Architect preparing structured mock data for an Airbnb listing clone.
+
+Objective:
+Create two comprehensive data files: `src/data/listingData.js` and `src/data/photoTourData.js`, replicating an authentic Airbnb listing for a luxury serviced apartment in Candolim, Goa ('Romantic Jacuzzi 1BHK Candolim | Mirashya UG10').
+
+Requirements for `src/data/listingData.js`:
+1. Metadata:
+   - id: '1599895892448055764'
+   - title: 'Romantic Jacuzzi 1BHK Candolim | Mirashya UG10'
+   - type: 'Entire serviced apartment in Candolim, India'
+   - specs: '3 guests · 1 bedroom · 1 bed · 1 bathroom'
+   - rating: 4.95, reviewsCount: 19, isGuestFavorite: true
+   - nightlyPrice: 5699, currency: '₹', discountPercent: 10
+2. Images:
+   - High-res CDN URLs for the 5-photo hero mosaic (heroMain, hero2, hero3, hero4, hero5).
+   - Array of all photos with descriptive room captions (private outdoor deck jacuzzi, king bedroom, living room, pool, kitchenette).
+3. Host Profile:
+   - Host name ('Mirashya Homes'), avatar, superhost status, 2 years hosting, rating (4.68), review count (1,463), co-hosts list (Sharath, Aman, Maria, Simran, etc.).
+4. Highlights & Description:
+   - Structured highlights array with Lucide icon keys, titles, and blurbs.
+   - Description object containing intro, the space, guest access, and other details.
+5. Structured Amenities:
+   - Top 10 featured amenities (Kitchen, Wifi, Workspace, Free parking, Pool, Hot tub, Pets allowed, Exterior cameras, etc.).
+   - Full categorized amenities list (`allAmenitiesList`) grouped into Bathroom, Bedroom & laundry, Entertainment, Heating & cooling, Home safety, Kitchen, Outdoor, Parking, and Services.
+6. Reviews & Ratings:
+   - Category ratings breakdown (Cleanliness 5.0, Accuracy 5.0, Check-in 5.0, Communication 5.0, Location 4.8, Value 4.8).
+   - Mentions badges array with counts (Comfort, Accuracy, Hot tub, Hospitality, Cleanliness).
+   - List of 6 detailed review items with author, tenure, date, rating, avatar/initials, and text.
+7. Location & Rules:
+   - Candolim Goa coords (15.5175, 73.7784), nearby spots with distances.
+   - House rules, safety features, and cancellation policies.
+
+Requirements for `src/data/photoTourData.js`:
+- Grouped photo tour rooms (living1, living2, bedroom, exterior, etc.) mapping photo arrays with dimensions and captions for the scrollable photo modal.
+
+Acceptance Criteria:
+- Data must be structured as ES modules with zero circular dependencies.
+- Images must point to reliable, high-resolution Muscache CDN URLs without broken links."
+
+================================================================================
+PROMPT 03: NODE.JS EXPRESS REST API & ATOMIC JSON PERSISTENCE STORE
+================================================================================
+"You are a Backend Systems Engineer building a zero-dependency REST API for an Airbnb single-page clone.
+
+Objective:
+Create an Express 5 backend with file-backed persistence so reviewers can run the application instantly without configuring MongoDB, Docker, or PostgreSQL.
+
+Implementation Plan:
+1. `server/data/initialData.js`:
+   - Export default listing data and initial blocked date seed (e.g. November 18-24, 2026).
+2. `server/data/store.js`:
+   - Implement a `Store` class managing atomic reads and writes to `server/data/db.json`.
+   - On boot, if `db.json` is missing or corrupt, initialize from `initialData.js`.
+   - Method `getListing()`: Return listing metadata with dynamic review count and ratings.
+   - Method `getAvailability()`: Return active blocked date ranges.
+   - Method `createReservation({ checkInDate, checkOutDate, guests, guestName, promoApplied })`:
+     * Validate date format and ensure `checkInDate < checkOutDate`.
+     * Date collision check: If the range overlaps with any existing booking, throw an error with status 400.
+     * Price calculator: Calculate baseSubtotal (nightlyRate * nights), 10% promo discount (if applied), cleaning fee (₹1,200), service fee (8%), and GST taxes (12%).
+     * Generate unique booking code (`BK-XXXXXX`).
+     * Append to reservations, persist to disk, and return confirmed booking payload.
+   - Method `getReviews(query, sort)`: Filter reviews by search term and sort by highest/lowest rating.
+   - Method `addReview({ author, rating, text })`: Add review, recalculate average listing rating, persist to disk.
+3. `server/index.js`:
+   - Express server listening on PORT 5000 with CORS and express.json().
+   - `GET /`: Serve a clean, modern HTML API Explorer dashboard with clickable links to all endpoints.
+   - `GET /api/health`: Health status, uptime, timestamp.
+   - `GET /api/listing`: Full listing JSON with embedded blockedRanges.
+   - `GET /api/availability`: Blocked calendar date ranges.
+   - `POST /api/reserve`: Reservation creation endpoint returning 201 Created or 400 Bad Request.
+   - `GET /api/reviews`: Filterable/sortable reviews endpoint.
+   - `POST /api/reviews`: Review creation endpoint.
+   - `POST /api/inquiries`: Contact host inquiry endpoint.
+
+Acceptance Criteria:
+- Passing overlapping dates to `POST /api/reserve` returns HTTP 400 with a descriptive collision message.
+- Valid reservations return an itemized pricing breakdown and persist across server restarts."
+
+================================================================================
+PROMPT 04: SHELL LAYOUT, MAIN NAVBAR & STICKY SCROLL-SPY SUBNAVBAR
+================================================================================
+"You are a Senior React UI Engineer developing the top-level application shell and navigation components.
+
+Objective:
+Build `src/components/Navbar.jsx`, `src/components/SubNavbar.jsx`, and integrate them into `src/App.jsx`.
+
+Requirements:
+1. `Navbar.jsx`:
+   - Airbnb brand logo (SVG) on the left.
+   - Center search pill: 'Anywhere' | 'Any week' | 'Add guests' with search icon button.
+   - Right controls: 'Airbnb your home' link, globe icon button, and user menu capsule with hamburger icon and profile avatar.
+2. `SubNavbar.jsx`:
+   - Fixed sticky bar that appears smoothly when `window.scrollY > 480px`.
+   - Left navigation tabs: 'Photos', 'Amenities', 'Reviews', 'Location' that smoothly scroll to corresponding section IDs with proper offset (-140px).
+   - Right summary widget: Nightly price, star rating, reviews count, and a compact 'Reserve' CTA that scrolls to the booking widget.
+3. `App.jsx` Integration:
+   - Root container with `.airbnb-app-root` and max-width layout container (1280px).
+   - Window scroll event listener (passive) controlling sub-navbar visibility.
+   - Fallback-safe initial state using `listingData.js`, refreshed asynchronously via `fetch('/api/listing')` on mount.
+
+Acceptance Criteria:
+- Scrolling past the hero gallery triggers the sub-navbar smoothly.
+- Clicking any sub-navbar tab scrolls precisely to that section without content being obscured under the sticky header."
+
+================================================================================
+PROMPT 05: 5-PHOTO MOSAIC HERO GALLERY & FULL-SCREEN PHOTO TOUR MODAL
+================================================================================
+"You are a Frontend Visual Specialist implementing Airbnb's signature media gallery.
+
+Objective:
+Create `src/components/PhotoGallery.jsx` and `src/components/Modals/PhotoTourModal.jsx`.
+
+Requirements:
+1. `PhotoGallery.jsx`:
+   - Desktop 5-photo grid: 1 large main hero image on the left (50% width), 2x2 grid of 4 secondary images on the right (50% width).
+   - Rounded exterior container corners (12px) with 8px internal gutters.
+   - Hover effect: Image brightness dimming (0.9) and subtle cursor pointer.
+   - Floating 'Show all photos' button in the bottom-right corner with grid icon and photo count.
+   - Clicking any photo opens the photo tour modal focused on that specific image/section.
+2. `PhotoTourModal.jsx`:
+   - Full-screen fixed modal with white background and z-index 1000.
+   - Sticky top bar with '✕' close button, photo counter, and share action.
+   - Room filter pills: 'All photos', 'Private Jacuzzi & Deck', 'Master Bedroom', 'Living Area', 'Kitchenette', 'Building Exterior & Pool'.
+   - Scrollable single-column feed of large high-res photos with room titles and descriptions.
+   - Keyboard listener: Close on 'Escape'. Prevent page body scrolling while open.
+
+Acceptance Criteria:
+- Layout matches Airbnb desktop grid with exact aspect ratios.
+- Modal opens and closes smoothly with zero background scroll bleed."
+
+================================================================================
+PROMPT 06: PROPERTY OVERVIEW, HOST HIGHLIGHTS & COLLAPSIBLE DESCRIPTION
+================================================================================
+"You are a UI Component Specialist building the property detail sections for the left column.
+
+Objective:
+Build `Overview.jsx`, `HostPreview.jsx`, `Highlights.jsx`, `Description.jsx`, and `SleepingArrangements.jsx`.
+
+Requirements:
+1. `Overview.jsx`:
+   - Property type title, subtitle with specs (3 guests · 1 bedroom · 1 bed · 1 bathroom).
+   - Host summary pill with host avatar, 'Hosted by Mirashya Homes', and 'Guest favourite' trophy badge.
+2. `HostPreview.jsx`:
+   - Co-hosts list with overlapping circular avatars.
+   - Quick host badges: 2 years hosting, rating, response rate.
+3. `Highlights.jsx`:
+   - 3 highlighted features: 'Outdoor entertainment' (Jacuzzi & Pool), 'Designed for staying cool' (AC & fans), and 'Self check-in' (Building staff).
+   - Consistent Lucide icons with title and description text.
+4. `Description.jsx`:
+   - Narrative section with Airbnb-style formatting.
+   - Collapsible text preview with 'Show more >' button. Clicking expands the full description without layout shifts.
+5. `SleepingArrangements.jsx`:
+   - Horizontal cards showing bedroom layout: Bedroom (1 double bed) and Living Room (1 sofa bed) with room photos.
+
+Acceptance Criteria:
+- All components consume props dynamically from the active `listing` state.
+- Clean typography and subtle border dividers (`<hr className='divider' />`) between sections."
+
+================================================================================
+PROMPT 07: FEATURED AMENITIES & CATEGORIZED SLIDE-OVER MODAL
+================================================================================
+"You are a React Component Developer building the amenities presentation.
+
+Objective:
+Create `src/components/Amenities.jsx` and `src/components/Modals/AmenitiesModal.jsx`.
+
+Requirements:
+1. `Amenities.jsx`:
+   - Render a 2-column grid showing the top 10 featured amenities (Kitchen, Wifi, Workspace, Free parking, Pool, Hot tub, Pets allowed, Security cameras).
+   - Display unavailable items with strikethrough styling and red/gray crossed indicators (Smoke alarm not reported, Carbon monoxide alarm not reported).
+   - Bottom CTA button: 'Show all 43 amenities'.
+2. `AmenitiesModal.jsx`:
+   - Centered modal dialog with backdrop blur.
+   - Header with 'Amenities' title and sticky close button.
+   - Categorized sections: 'Bathroom', 'Bedroom & laundry', 'Entertainment', 'Heating & cooling', 'Home safety', 'Kitchen & dining', 'Outdoor', 'Parking & facilities', 'Services'.
+   - Each item accompanied by an appropriate Lucide icon.
+
+Acceptance Criteria:
+- Clicking 'Show all 43 amenities' opens the modal with all categories.
+- Strikethrough amenities accurately match Airbnb's safety disclosure format."
+
+================================================================================
+PROMPT 08: INTERACTIVE RESERVE CARD WIDGET & BACKEND BOOKING ENGINE
+================================================================================
+"You are a Full-Stack Feature Engineer building the core transactional booking widget.
+
+Objective:
+Implement `src/components/ReserveCard.jsx` connected to the Express `POST /api/reserve` endpoint.
+
+Requirements:
+1. Header & Price Display:
+   - Sticky sidebar card (`position: sticky; top: 120px;`).
+   - Dynamic price header: Calculate `nightlyPrice * nights`, applying a 10% discount if the promo coupon is claimed.
+   - Promo bar: 'Get 10% off your next stay' with an interactive 'Claim' toggle button.
+2. Inputs Container:
+   - Check-in and Checkout date picker cells (clicking opens or scrolls to the Calendar).
+   - Guest selector dropdown with stepper controls (+/-) for Adults (min 1, max 3), Children, Infants, and Pets.
+3. Backend Booking Submission:
+   - 'Reserve' button sends `POST /api/reserve` with `{ checkInDate, checkOutDate, guests, promoApplied }`.
+   - Show loading state ('Reserving...') while in flight.
+   - On error: Display a red error alert box with the server's error message (e.g. date overlap collision).
+   - On success: Render a green confirmation card displaying:
+     * Booking reference ID (`BK-XXXXXX`)
+     * Nights calculation (`N nights × ₹5,699`)
+     * 10% promo discount deduction (if claimed)
+     * Cleaning fee, service fee, and GST breakdown
+     * Total amount confirmed
+   - Callback: Call `onReservationSuccess(data)` to pass newly booked dates up to `App.jsx`.
+
+Acceptance Criteria:
+- Completing a reservation immediately disables those dates on the interactive calendar.
+- Stepper buttons enforce strict minimums and maximums (maximum 3 adults/children combined)."
+
+================================================================================
+PROMPT 09: DUAL-MONTH CALENDAR & BI-DIRECTIONAL AVAILABILITY SYNC
+================================================================================
+"You are a Senior Frontend Engineer implementing a synchronized interactive calendar.
+
+Objective:
+Create `src/components/CalendarSection.jsx` with real-time availability blocking.
+
+Requirements:
+1. Calendar Layout:
+   - Dual-month side-by-side display (October 2026 and November 2026 by default) with previous/next month pagination.
+   - Day of week headers: S, M, T, W, T, F, S.
+2. Date Selection Logic:
+   - First click selects check-in date.
+   - Second click selects checkout date.
+   - If second click is earlier than check-in, reset check-in to clicked date.
+   - Highlight the selected range: Solid dark circles on start/end dates, light pink wash on dates in between.
+3. Availability & Collision Blocking:
+   - Accept `blockedRanges` prop (array of `{ start, end }` objects from backend).
+   - Any date falling inside a blocked range must be disabled (`disabled={true}`), styled with strikethrough/gray text, and unclickable.
+   - Default seed: November 18-24, 2026 is blocked.
+   - Any new reservation made via `ReserveCard` must immediately appear as blocked on this calendar without a page reload.
+4. Header & Reset:
+   - Header dynamically displays duration: '5 nights in Candolim' and selected date range ('18 Oct 2026 – 23 Oct 2026').
+   - 'Clear dates' button to reset date selection.
+
+Acceptance Criteria:
+- Selecting dates updates the ReserveCard input fields.
+- Dates returned by `POST /api/reserve` become instantly unselectable on the calendar grid."
+
+================================================================================
+PROMPT 10: REVIEWS SCORECARD, SEARCH QUERY FILTER & REVIEWS MODAL
+================================================================================
+"You are a Full-Stack Engineer implementing the property reviews and ratings subsystem.
+
+Objective:
+Create `src/components/ReviewsSection.jsx` and `src/components/Modals/ReviewsModal.jsx`.
+
+Requirements:
+1. Reviews Scorecard:
+   - Star rating callout: 4.95 with big laurel icon and 'Guest favourite' caption.
+   - Category progress meters: Cleanliness (5.0), Accuracy (5.0), Check-in (5.0), Communication (5.0), Location (4.8), Value (4.8) with animated percentage bars.
+2. Mention Tags:
+   - Interactive keyword tags with counts: 'Comfort (6)', 'Accuracy (5)', 'Hot tub (5)', 'Hospitality (8)', 'Cleanliness (4)'.
+3. Reviews Grid:
+   - 2-column grid of review cards showing author avatar/initials, tenure ('3 months on Airbnb'), date, star rating, and review text.
+   - 'Show all 19 reviews' button opening `ReviewsModal.jsx`.
+4. `ReviewsModal.jsx`:
+   - Left pane: Rating breakdown and category scores.
+   - Right pane: Search input connected to `GET /api/reviews?search=...`, sorting dropdown (Highest rated, Lowest rated, Newest), and full list of matching reviews.
+
+Acceptance Criteria:
+- Typing in the reviews search bar filters reviews in real time via the backend endpoint.
+- Average rating displays accurately to two decimal places."
+
+================================================================================
+PROMPT 11: HOST MESSAGING MODAL, LOCATION MAP & THINGS TO KNOW
+================================================================================
+"You are a UI Engineer building the footer informational components and host contact workflow.
+
+Objective:
+Implement `MeetYourHost.jsx`, `LocationMap.jsx`, `ThingsToKnow.jsx`, and `src/components/Modals/ShareModal.jsx`.
+
+Requirements:
+1. `MeetYourHost.jsx`:
+   - Detailed host identity card: Mirashya Homes, host avatar, superhost badge, NICMAR GOA education, 'Born in the 80s', 100% response rate, response time within an hour.
+   - Co-hosts list with avatars.
+   - 'Message Host' button opening an inquiry modal.
+   - In the modal: Textarea for guest inquiry, wired to `POST /api/inquiries`. Submitting displays a verified confirmation banner: 'Host Mirashya Homes has received your message and usually responds within an hour.'
+2. `LocationMap.jsx`:
+   - Map card for Candolim, Goa with location pin, address summary, neighborhood blurb, and nearby destinations with distances.
+3. `ThingsToKnow.jsx`:
+   - 3-column section: House rules (check-in after 2pm, checkout 11am, 3 guests max), Safety & property (smoke alarm disclosure), and Cancellation policy.
+4. `ShareModal.jsx`:
+   - Modal with listing preview card and social share buttons.
+   - 'Copy Link' button writing `window.location.href` to `navigator.clipboard` with 'Copied!' tooltip feedback.
+
+Acceptance Criteria:
+- Message Host form validates non-empty input and provides immediate feedback.
+- Copy Link works across all modern browsers with fallback."
+
+================================================================================
+PROMPT 12: PURE VANILLA CSS DESIGN SYSTEM, RESPONSIVE BREAKPOINTS & LINTING
+================================================================================
+"You are a Principal Frontend Architect establishing the CSS design system and code quality standards.
+
+Objective:
+Refine `src/index.css`, `src/App.css`, and individual component stylesheets for pixel precision and mobile responsiveness.
+
+Requirements:
+1. Design System Tokens:
+   - Color palette:
+     * Brand: `#FF385C` (Airbnb Coral), Hover: `#E00B41`
+     * Text Primary: `#222222`, Text Secondary: `#717171`
+     * Borders: `#DDDDDD`, `#B0B0B0`, `#EBEBEB`
+     * Backgrounds: `#FFFFFF`, `#F7F7F7`, Soft Pink Range: `#FDF2F4`
+   - Typography: Font family `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`.
+   - Elevations: Box shadows for floating pills, sticky reserve card, and modals.
+2. Responsive Breakpoints:
+   - Desktop (>1128px): Two-column layout (60% content, 40% sticky reservation sidebar).
+   - Tablet (744px - 1128px): Narrower hero gallery, stacked reservation section.
+   - Mobile (<744px): Single hero image, full-width content, and a mobile bottom fixed bar with price and 'Reserve' button.
+3. Code Quality & Linting:
+   - Run Oxlint / ESLint across all files. Eliminate unused variables and verify cleanup of all scroll and resize listeners in `useEffect`.
+   - Ensure production bundle builds cleanly via `npm run build`.
+
+Acceptance Criteria:
+- Zero linting errors and clean bundle build.
+- UI looks indistinguishable from Airbnb production listing on desktop and mobile viewports."
+
+================================================================================
+END OF PROMPTS SPECIFICATION
+================================================================================

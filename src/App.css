@@ -34,12 +34,97 @@
 
 @media (max-width: 900px) {
   .listing-main-content {
-    flex-direction: column-reverse;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+  .listing-left-col {
+    width: 100%;
+    min-width: 0;
   }
   .listing-right-col {
     width: 100%;
-    margin-bottom: 32px;
+    margin-top: 8px;
+    margin-bottom: 24px;
     align-self: auto;
+  }
+}
+
+/* Mobile Floating Bottom Bar */
+.mobile-bottom-reserve-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .airbnb-app-root {
+    padding-bottom: 84px;
+  }
+
+  .mobile-bottom-reserve-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 74px;
+    background: #FFFFFF;
+    border-top: 1px solid var(--color-border-light, #EBEBEB);
+    padding: 0 20px;
+    z-index: 99;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+  }
+
+  .mobile-bottom-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-bottom-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .mobile-price-val {
+    font-size: 16px;
+    font-weight: 700;
+    color: #222222;
+  }
+
+  .mobile-price-lbl {
+    font-size: 14px;
+    color: #222222;
+  }
+
+  .mobile-bottom-dates-btn {
+    font-size: 13px;
+    color: #222222;
+    text-align: left;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .mobile-bottom-dates-btn u {
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  .mobile-bottom-cta-btn {
+    background: linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%);
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+
+  .mobile-bottom-cta-btn:active {
+    transform: scale(0.97);
   }
 }

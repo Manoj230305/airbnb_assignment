@@ -10,12 +10,16 @@ export default function ReserveCard({
   checkInDate = '10/18/2026',
   checkOutDate = '10/23/2026',
   onOpenCalendar,
-  onOpenReport
+  onOpenReport,
+  onReservationSuccess
 }) {
   const [guests, setGuests] = useState({ adults: 2, children: 0, infants: 0, pets: 0 });
   const [guestDropdownOpen, setGuestDropdownOpen] = useState(false);
   const [claimed, setClaimed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [reservationMade, setReservationMade] = useState(false);
+  const [bookingData, setBookingData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const totalGuests = guests.adults + guests.children;
   const guestLabel = `${totalGuests} guest${totalGuests > 1 ? 's' : ''}${
@@ -24,6 +28,16 @@ export default function ReserveCard({
 
   const currentCheckIn = checkInDate || '10/18/2026';
   const currentCheckOut = checkOutDate || '10/23/2026';
+
+  const calculateNights = () => {
+    if (!checkInDate || !checkOutDate) return 5;
+    const diff = (new Date(checkOutDate).getTime() - new Date(checkInDate).getTime()) / (1000 * 60 * 60 * 24);
+    return Math.max(1, Math.round(diff)) || 5;
+  };
+
+  const nights = calculateNights();
+  const basePrice = nightlyPrice * nights;
+  const displayedPrice = claimed ? Math.round(basePrice * 0.9) : basePrice;
 
   const updateGuestCount = (type, delta) => {
     setGuests(prev => {
@@ -37,8 +51,36 @@ export default function ReserveCard({
     });
   };
 
-  const handleAction = () => {
-    setReservationMade(true);
+  const handleAction = async () => {
+    setErrorMessage(null);
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/reserve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          checkInDate: currentCheckIn,
+          checkOutDate: currentCheckOut,
+          guests,
+          promoApplied: claimed
+        })
+      });
+
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        throw new Error(json.error || 'Unable to complete reservation');
+      }
+
+      setBookingData(json.data);
+      setReservationMade(true);
+      if (onReservationSuccess) {
+        onReservationSuccess(json.data);
+      }
+    } catch (err) {
+      setErrorMessage(err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -68,8 +110,8 @@ export default function ReserveCard({
       <div className="reserve-card">
         <div className="reserve-card-header">
           <div className="price-title-row">
-            <span className="price-amount">{currency}28,499</span>
-            <span className="price-period">for 5 nights</span>
+            <span className="price-amount">{currency}{displayedPrice.toLocaleString('en-IN')}</span>
+            <span className="price-period">for {nights} night{nights > 1 ? 's' : ''}</span>
           </div>
         </div>
 
@@ -218,13 +260,52 @@ export default function ReserveCard({
         </div>
 
         {/* CTA Button */}
-        <button className="reserve-cta-btn" onClick={handleAction}>
-          Reserve
+        <button
+          className="reserve-cta-btn"
+          onClick={handleAction}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Reserving...' : 'Reserve'}
         </button>
 
-        {reservationMade && (
+        {errorMessage && (
+          <div className="reservation-error-msg">
+            ⚠️ {errorMessage}
+          </div>
+        )}
+
+        {reservationMade && bookingData && (
           <div className="reservation-success-msg">
-            🎉 Great choice! Dates are available. Frontend demo completed.
+            <div style={{ fontWeight: 700, marginBottom: 4 }}>
+              🎉 Reservation Confirmed!
+            </div>
+            <div>
+              Booking ID: <span className="booking-code-tag">{bookingData.id}</span>
+            </div>
+            <div className="booking-confirmation-details">
+              <div className="booking-price-row">
+                <span>{nights} nights × {currency}{nightlyPrice.toLocaleString('en-IN')}</span>
+                <span>{currency}{bookingData.pricing.baseSubtotal.toLocaleString('en-IN')}</span>
+              </div>
+              {bookingData.pricing.discount > 0 && (
+                <div className="booking-price-row" style={{ color: '#1B5E20' }}>
+                  <span>10% Promo Discount</span>
+                  <span>-{currency}{bookingData.pricing.discount.toLocaleString('en-IN')}</span>
+                </div>
+              )}
+              <div className="booking-price-row">
+                <span>Cleaning & Service fee</span>
+                <span>{currency}{(bookingData.pricing.cleaningFee + bookingData.pricing.serviceFee).toLocaleString('en-IN')}</span>
+              </div>
+              <div className="booking-price-row">
+                <span>Taxes (12% GST)</span>
+                <span>{currency}{bookingData.pricing.taxes.toLocaleString('en-IN')}</span>
+              </div>
+              <div className="booking-price-row" style={{ fontWeight: 700, borderTop: '1px solid #C8E6C9', marginTop: 6, paddingTop: 4 }}>
+                <span>Total Amount</span>
+                <span>{currency}{bookingData.pricing.totalAmount.toLocaleString('en-IN')}</span>
+              </div>
+            </div>
           </div>
         )}
 

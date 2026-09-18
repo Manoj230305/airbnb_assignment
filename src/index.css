@@ -70,6 +70,12 @@ a {
   }
 }
 
+@media (max-width: 768px) {
+  .page-container {
+    padding: 0 16px;
+  }
+}
+
 /* Typography Helpers */
 h1 {
   font-size: 26px;

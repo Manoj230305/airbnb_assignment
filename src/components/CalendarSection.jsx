@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Keyboard } from 'lucide-react';
 import './CalendarSection.css';
 
-export default function CalendarSection({ checkInDate, checkOutDate, onSelectDates, onClearDates }) {
+export default function CalendarSection({ checkInDate, checkOutDate, onSelectDates, onClearDates, blockedRanges = [] }) {
   // Default months: October 2026 (index 0) and November 2026 (index 1)
   const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
 
@@ -18,33 +18,65 @@ export default function CalendarSection({ checkInDate, checkOutDate, onSelectDat
 
   const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
+  const getMonthNumber = (monthName) => {
+    const map = { October: '10', November: '11', December: '12', January: '01' };
+    return map[monthName] || '10';
+  };
+
+  const formatDateStr = (m, day) => {
+    const mm = getMonthNumber(m.name);
+    const dd = day < 10 ? '0' + day : String(day);
+    return `${mm}/${dd}/${m.year}`;
+  };
+
   const isSelectedCheckIn = (m, day) => {
-    return checkInDate === '10/18/2026' && m.name === 'October' && day === 18;
+    if (!checkInDate) return false;
+    return formatDateStr(m, day) === checkInDate;
   };
 
   const isSelectedCheckOut = (m, day) => {
-    return checkOutDate === '10/23/2026' && m.name === 'October' && day === 23;
+    if (!checkOutDate) return false;
+    return formatDateStr(m, day) === checkOutDate;
   };
 
   const isInRange = (m, day) => {
-    if (checkInDate === '10/18/2026' && checkOutDate === '10/23/2026') {
-      return m.name === 'October' && day > 18 && day < 23;
+    if (!checkInDate || !checkOutDate) return false;
+    const dateMs = new Date(formatDateStr(m, day)).getTime();
+    const inMs = new Date(checkInDate).getTime();
+    const outMs = new Date(checkOutDate).getTime();
+    return dateMs > inMs && dateMs < outMs;
+  };
+
+  const isBlocked = (m, day) => {
+    // In November 2026, days 18-24 are blocked by default
+    if (m.name === 'November' && day >= 18 && day <= 24) return true;
+
+    if (blockedRanges && blockedRanges.length > 0) {
+      const dateMs = new Date(formatDateStr(m, day)).getTime();
+      for (const range of blockedRanges) {
+        const startMs = new Date(range.start).getTime();
+        const endMs = new Date(range.end).getTime();
+        if (dateMs >= startMs && dateMs <= endMs) {
+          return true;
+        }
+      }
     }
     return false;
   };
 
-  const isBlocked = (m, day) => {
-    // In November 2026, days 18-24 are blocked as shown in mockup
-    return m.name === 'November' && day >= 18 && day <= 24;
-  };
-
   const handleDateClick = (m, day) => {
     if (isBlocked(m, day)) return;
-    const formatted = `${m.name === 'October' ? '10' : '11'}/${day < 10 ? '0' + day : day}/${m.year}`;
+    const formatted = formatDateStr(m, day);
     if (!checkInDate || (checkInDate && checkOutDate)) {
       onSelectDates && onSelectDates(formatted, null);
     } else {
-      onSelectDates && onSelectDates(checkInDate, formatted);
+      const inMs = new Date(checkInDate).getTime();
+      const clickMs = new Date(formatted).getTime();
+      if (clickMs <= inMs) {
+        onSelectDates && onSelectDates(formatted, null);
+      } else {
+        onSelectDates && onSelectDates(checkInDate, formatted);
+      }
     }
   };
 
@@ -54,7 +86,7 @@ export default function CalendarSection({ checkInDate, checkOutDate, onSelectDat
     }
   };
 
-  const hasSelectedRange = checkInDate === '10/18/2026' && checkOutDate === '10/23/2026';
+  const hasSelectedRange = Boolean(checkInDate && checkOutDate);
 
   const renderMonthGrid = (m) => {
     const cells = [];
@@ -128,6 +160,7 @@ export default function CalendarSection({ checkInDate, checkOutDate, onSelectDat
       <div className="two-months-container">
         {/* Month 1 */}
         <div className="single-month-col">
+          <h3 className="single-month-title">{month1.name} {month1.year}</h3>
           <div className="cal-weekdays-row">
             {daysOfWeek.map((d, i) => (
               <span key={i} className="weekday-col-label">{d}</span>
@@ -140,6 +173,7 @@ export default function CalendarSection({ checkInDate, checkOutDate, onSelectDat
 
         {/* Month 2 */}
         <div className="single-month-col">
+          <h3 className="single-month-title">{month2.name} {month2.year}</h3>
           <div className="cal-weekdays-row">
             {daysOfWeek.map((d, i) => (
               <span key={i} className="weekday-col-label">{d}</span>

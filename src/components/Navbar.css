@@ -177,20 +177,70 @@
 }
 
 @media (max-width: 768px) {
-  .logo-text {
+  .airbnb-header {
+    padding: 0 16px;
+    height: 64px;
+  }
+
+  .header-inner {
+    gap: 8px;
+    padding: 0;
+  }
+
+  .header-logo-img {
+    height: 28px;
+  }
+
+  .header-search-bar {
+    flex: 1;
+    min-width: 0;
+    margin: 0 8px;
+  }
+
+  .search-pill-btn {
+    width: 100%;
+    justify-content: space-between;
+    padding: 6px 8px 6px 12px;
+    gap: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .search-pill-left-icon {
     display: none;
+  }
+
+  .search-pill-divider {
+    display: none;
+  }
+
+  .search-pill-item.muted {
+    display: none;
+  }
+
+  .search-pill-item.bold:nth-of-type(2) {
+    display: none;
+  }
+
+  .search-pill-item.bold {
+    font-size: 13px;
+    color: var(--color-text-main);
+  }
+
+  .search-pill-icon {
+    width: 28px;
+    height: 28px;
   }
 
   .host-cta-btn {
     display: none;
   }
 
-  .search-pill-btn {
-    padding: 6px 6px 6px 12px;
-    gap: 8px;
+  .header-circle-btn.globe-btn {
+    display: none;
   }
 
-  .search-pill-item {
-    font-size: 12px;
+  .header-circle-btn {
+    width: 36px;
+    height: 36px;
   }
 }

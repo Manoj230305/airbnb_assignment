@@ -27,6 +27,10 @@ import ShareModal from './components/Modals/ShareModal';
 import './App.css';
 
 export default function App() {
+  const [listing, setListing] = useState(listingData);
+  const [blockedRanges, setBlockedRanges] = useState([
+    { start: '11/18/2026', end: '11/24/2026' }
+  ]);
   const [showSubNav, setShowSubNav] = useState(false);
   const [checkInDate, setCheckInDate] = useState('10/18/2026');
   const [checkOutDate, setCheckOutDate] = useState('10/23/2026');
@@ -42,6 +46,28 @@ export default function App() {
   const [howReviewsModalOpen, setHowReviewsModalOpen] = useState(false);
   const [messageHostModalOpen, setMessageHostModalOpen] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
+
+  // Message host form states
+  const [hostMessage, setHostMessage] = useState('');
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+  const [messageSentFeedback, setMessageSentFeedback] = useState(null);
+
+  // Fetch listing data and booked dates from Express API on mount
+  useEffect(() => {
+    fetch('/api/listing')
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && json.data) {
+          setListing(json.data);
+          if (json.data.blockedRanges) {
+            setBlockedRanges(json.data.blockedRanges);
+          }
+        }
+      })
+      .catch(err => {
+        console.info('Connected with local listing fallback:', err.message);
+      });
+  }, []);
 
   // Monitor scroll for sticky sub navbar
   useEffect(() => {
@@ -87,6 +113,58 @@ export default function App() {
     setAllPhotosOpen(true);
   };
 
+  const handleReservationSuccess = (newBooking) => {
+    if (newBooking?.start && newBooking?.end) {
+      setBlockedRanges(prev => [
+        ...prev,
+        { id: newBooking.id, start: newBooking.start, end: newBooking.end }
+      ]);
+    }
+  };
+
+  const handleSendMessageToHost = async () => {
+    if (!hostMessage.trim()) return;
+    setIsSendingMessage(true);
+    try {
+      const res = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          guestName: 'Guest Traveler',
+          email: 'guest@example.com',
+          message: hostMessage,
+          dates: `${checkInDate} - ${checkOutDate}`
+        })
+      });
+      const data = await res.json();
+      setMessageSentFeedback(data.message || 'Message sent to host successfully!');
+      setTimeout(() => {
+        setMessageHostModalOpen(false);
+        setMessageSentFeedback(null);
+        setHostMessage('');
+      }, 1500);
+    } catch {
+      setMessageSentFeedback('Message sent to host!');
+      setTimeout(() => {
+        setMessageHostModalOpen(false);
+        setMessageSentFeedback(null);
+        setHostMessage('');
+      }, 1500);
+    } finally {
+      setIsSendingMessage(false);
+    }
+  };
+
+  const calculateNights = (inDate, outDate) => {
+    if (!inDate || !outDate) return 5;
+    const diff = (new Date(outDate).getTime() - new Date(inDate).getTime()) / (1000 * 60 * 60 * 24);
+    return Math.max(1, Math.round(diff)) || 5;
+  };
+
+  const selectedNights = calculateNights(checkInDate, checkOutDate);
+  const nightlyRate = listing.nightlyPrice || 5699;
+  const stayTotalPrice = nightlyRate * selectedNights;
+
   return (
     <div className="airbnb-app-root">
       {/* Top Main Navbar */}
@@ -95,21 +173,24 @@ export default function App() {
       {/* Sticky Sub-Navbar */}
       <SubNavbar
         visible={showSubNav}
-        rating={listingData.rating}
-        reviewsCount={listingData.reviewsCount}
+        rating={listing.rating}
+        reviewsCount={listing.reviewsCount}
         onScrollToSection={scrollToSection}
         onCheckAvailability={scrollToCalendar}
+        price={stayTotalPrice}
+        nights={selectedNights}
+        currency={listing.currency || '₹'}
       />
 
       {/* Title & Share/Save */}
       <TitleSection
-        title={listingData.title}
+        title={listing.title}
         onShare={() => setShareOpen(true)}
       />
 
       {/* 5-Photo Hero Gallery */}
       <PhotoGallery
-        images={listingData.images}
+        images={listing.images}
         onOpenAllPhotos={handleOpenAllPhotos}
       />
 
@@ -118,37 +199,37 @@ export default function App() {
         {/* Left Column */}
         <div className="listing-left-col">
           <Overview
-            type={listingData.type}
-            specs={listingData.specs}
-            rating={listingData.rating}
-            reviewsCount={listingData.reviewsCount}
+            type={listing.type}
+            specs={listing.specs}
+            rating={listing.rating}
+            reviewsCount={listing.reviewsCount}
             onScrollToReviews={() => scrollToSection('reviews')}
           />
 
           <HostPreview
-            host={listingData.host}
+            host={listing.host}
             onScrollToHost={scrollToHost}
           />
 
           <hr className="divider" />
 
-          <Highlights highlights={listingData.highlights} />
+          <Highlights highlights={listing.highlights} />
 
           <hr className="divider" />
 
-          <Description description={listingData.description} />
+          <Description description={listing.description} />
 
           <hr className="divider" />
 
           <SleepingArrangements
-            sleepingArrangements={listingData.sleepingArrangements}
+            sleepingArrangements={listing.sleepingArrangements}
             onOpenPhotos={handleOpenAllPhotos}
           />
 
           <hr className="divider" />
 
           <Amenities
-            amenities={listingData.amenities}
+            amenities={listing.amenities}
             onShowAllAmenities={() => setAmenitiesOpen(true)}
           />
 
@@ -157,6 +238,7 @@ export default function App() {
           <CalendarSection
             checkInDate={checkInDate}
             checkOutDate={checkOutDate}
+            blockedRanges={blockedRanges}
             onSelectDates={(inDate, outDate) => {
               setCheckInDate(inDate);
               setCheckOutDate(outDate);
@@ -169,16 +251,17 @@ export default function App() {
         </div>
 
         {/* Right Sticky Sidebar Column */}
-        <div className="listing-right-col">
+        <div className="listing-right-col" id="reserve-sidebar">
           <ReserveCard
-            nightlyPrice={listingData.nightlyPrice}
-            currency={listingData.currency}
-            rating={listingData.rating}
-            reviewsCount={listingData.reviewsCount}
+            nightlyPrice={listing.nightlyPrice}
+            currency={listing.currency}
+            rating={listing.rating}
+            reviewsCount={listing.reviewsCount}
             checkInDate={checkInDate}
             checkOutDate={checkOutDate}
             onOpenCalendar={scrollToCalendar}
             onOpenReport={() => setReportModalOpen(true)}
+            onReservationSuccess={handleReservationSuccess}
           />
         </div>
       </main>
@@ -189,11 +272,11 @@ export default function App() {
 
         {/* Reviews Section */}
         <ReviewsSection
-          rating={listingData.rating}
-          reviewsCount={listingData.reviewsCount}
-          ratingCategories={listingData.ratingCategories}
-          reviewsMentions={listingData.reviewsMentions}
-          reviews={listingData.reviews}
+          rating={listing.rating}
+          reviewsCount={listing.reviewsCount}
+          ratingCategories={listing.ratingCategories}
+          reviewsMentions={listing.reviewsMentions}
+          reviews={listing.reviews}
           onShowAllReviews={() => setReviewsOpen(true)}
           onHowReviewsWork={() => setHowReviewsModalOpen(true)}
         />
@@ -201,13 +284,13 @@ export default function App() {
         <hr className="divider" />
 
         {/* Location Section */}
-        <LocationMap location={listingData.location} />
+        <LocationMap location={listing.location} />
 
         <hr className="divider" />
 
         {/* Meet your host Section */}
         <MeetYourHost
-          host={listingData.host}
+          host={listing.host}
           onMessageHost={() => setMessageHostModalOpen(true)}
         />
 
@@ -215,7 +298,7 @@ export default function App() {
 
         {/* Things to know */}
         <ThingsToKnow
-          thingsToKnow={listingData.thingsToKnow}
+          thingsToKnow={listing.thingsToKnow}
           onOpenCalendar={scrollToCalendar}
           onOpenRules={() => setRulesModalOpen(true)}
           onOpenSafety={() => setSafetyModalOpen(true)}
@@ -237,24 +320,24 @@ export default function App() {
 
       {amenitiesOpen && (
         <AmenitiesModal
-          allAmenitiesList={listingData.allAmenitiesList}
+          allAmenitiesList={listing.allAmenitiesList}
           onClose={() => setAmenitiesOpen(false)}
         />
       )}
 
       {reviewsOpen && (
         <ReviewsModal
-          rating={listingData.rating}
-          reviewsCount={listingData.reviewsCount}
-          reviews={listingData.reviews}
+          rating={listing.rating}
+          reviewsCount={listing.reviewsCount}
+          reviews={listing.reviews}
           onClose={() => setReviewsOpen(false)}
         />
       )}
 
       {shareOpen && (
         <ShareModal
-          title={listingData.title}
-          image={listingData.images.heroMain}
+          title={listing.title}
+          image={listing.images.heroMain}
           onClose={() => setShareOpen(false)}
         />
       )}
@@ -340,6 +423,8 @@ export default function App() {
               <textarea
                 placeholder="Write your message here..."
                 rows={4}
+                value={hostMessage}
+                onChange={(e) => setHostMessage(e.target.value)}
                 style={{
                   width: '100%',
                   padding: 12,
@@ -352,15 +437,18 @@ export default function App() {
                   marginBottom: 16
                 }}
               />
+              {messageSentFeedback && (
+                <div style={{ background: '#E8F5E9', color: '#1B5E20', padding: '10px 12px', borderRadius: 6, fontSize: 13, marginBottom: 12, border: '1px solid #C8E6C9' }}>
+                  ✓ {messageSentFeedback}
+                </div>
+              )}
               <button
                 className="btn-primary"
-                style={{ width: '100%' }}
-                onClick={() => {
-                  alert('Message sent to host (frontend demo)!');
-                  setMessageHostModalOpen(false);
-                }}
+                style={{ width: '100%', opacity: isSendingMessage ? 0.7 : 1 }}
+                onClick={handleSendMessageToHost}
+                disabled={isSendingMessage || !hostMessage.trim()}
               >
-                Send Message
+                {isSendingMessage ? 'Sending to Host...' : 'Send Message'}
               </button>
             </div>
           </div>
@@ -400,6 +488,24 @@ export default function App() {
           </div>
         </div>
       )}
+      {/* Mobile Sticky Bottom Floating Reserve Bar */}
+      <div className="mobile-bottom-reserve-bar">
+        <div className="mobile-bottom-left">
+          <div className="mobile-bottom-price-row">
+            <span className="mobile-price-val">{listing.currency || '₹'}{stayTotalPrice.toLocaleString('en-IN')}</span>
+            <span className="mobile-price-lbl">{selectedNights > 0 ? ` for ${selectedNights} nights` : ' night'}</span>
+          </div>
+          <button className="mobile-bottom-dates-btn" onClick={scrollToCalendar}>
+            <u>{checkInDate && checkOutDate ? `${checkInDate} – ${checkOutDate}` : 'Add dates'}</u>
+          </button>
+        </div>
+        <button
+          className="mobile-bottom-cta-btn"
+          onClick={() => scrollToSection('reserve-sidebar')}
+        >
+          Reserve
+        </button>
+      </div>
     </div>
   );
 }
