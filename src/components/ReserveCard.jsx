@@ -5,8 +5,8 @@ import './ReserveCard.css';
 export default function ReserveCard({
   nightlyPrice = 5699,
   currency = '₹',
-  rating = 4.95,
-  reviewsCount = 19,
+  rating: _rating = 4.95,
+  reviewsCount: _reviewsCount = 19,
   checkInDate = '10/18/2026',
   checkOutDate = '10/23/2026',
   onOpenCalendar,

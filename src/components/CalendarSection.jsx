@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Keyboard } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './CalendarSection.css';
 
 export default function CalendarSection({ checkInDate, checkOutDate, onSelectDates, onClearDates, blockedRanges = [] }) {
@@ -68,14 +68,14 @@ export default function CalendarSection({ checkInDate, checkOutDate, onSelectDat
     if (isBlocked(m, day)) return;
     const formatted = formatDateStr(m, day);
     if (!checkInDate || (checkInDate && checkOutDate)) {
-      onSelectDates && onSelectDates(formatted, null);
+      if (onSelectDates) onSelectDates(formatted, null);
     } else {
       const inMs = new Date(checkInDate).getTime();
       const clickMs = new Date(formatted).getTime();
       if (clickMs <= inMs) {
-        onSelectDates && onSelectDates(formatted, null);
+        if (onSelectDates) onSelectDates(formatted, null);
       } else {
-        onSelectDates && onSelectDates(checkInDate, formatted);
+        if (onSelectDates) onSelectDates(checkInDate, formatted);
       }
     }
   };

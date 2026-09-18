@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Share, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import './TitleSection.css';
 
 export default function TitleSection({ title, onShare }) {

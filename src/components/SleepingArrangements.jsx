@@ -3,7 +3,7 @@ import bedroomImg from '../assets/bedroom.jpeg';
 import livingImg from '../assets/livingroom.jpeg';
 import './SleepingArrangements.css';
 
-export default function SleepingArrangements({ sleepingArrangements, onOpenPhotos }) {
+export default function SleepingArrangements({ sleepingArrangements: _sleepingArrangements, onOpenPhotos }) {
   const items = [
     {
       room: "Bedroom",

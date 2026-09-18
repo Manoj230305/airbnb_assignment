@@ -1,5 +1,4 @@
 import React from 'react';
-import { Grid } from 'lucide-react';
 import './PhotoGallery.css';
 
 export default function PhotoGallery({ images, onOpenAllPhotos }) {
